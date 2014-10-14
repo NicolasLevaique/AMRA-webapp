@@ -17,4 +17,15 @@ angular.module('starter.services', [])
         return deferred.promise;
       }
     }
-  }]);
+  }])
+
+    .service('MapService', ['$http', '$q', function($http, $q) {
+        return {
+            getMap: function () {
+                    var mapOptions = {
+                        zoom: 8,
+                        center: new google.maps.LatLng(-34.397, 150.644)
+                    };
+            }
+        }
+    }]);

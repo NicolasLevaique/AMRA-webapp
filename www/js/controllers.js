@@ -53,4 +53,18 @@ angular.module('starter.controllers', [])
   PathsService.getPath('ed294220-4d3f-11e4-916c-0800200c9a66').then(function(path) {
     $scope.title = path.title;
   });
+})
+
+.controller('MapCtrl', function($scope) {
+    console.log('test');
+
+        $scope.initialize =function() {
+            var mapOptions = {
+                center: { lat: -34.397, lng: 150.644},
+                zoom: 8
+            };
+            $scope.map = new google.maps.Map(document.getElementById('map'),
+                mapOptions);
+        }
+
 });
