@@ -55,16 +55,14 @@ angular.module('starter.controllers', [])
   });
 })
 
-.controller('MapCtrl', function($scope) {
+.controller('MapCtrl', function($scope, MapService) {
     console.log('test');
+        var centerPos = { lat: 37.7699298,  lng: -122.4469157};
+        var directionDisplay = MapService.initMap('map', centerPos);
 
-        $scope.initialize =function() {
-            var mapOptions = {
-                center: { lat: -34.397, lng: 150.644},
-                zoom: 8
-            };
-            $scope.map = new google.maps.Map(document.getElementById('map'),
-                mapOptions);
+        $scope.calcRoute = function() {
+            var origin = new google.maps.LatLng(37.7699298, -122.4469157);
+            var destination = new google.maps.LatLng(37.7683909618184, -122.51089453697205);
+            MapService.traceRoute(directionDisplay, origin,destination);
         }
-
 });

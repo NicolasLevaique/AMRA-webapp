@@ -19,13 +19,34 @@ angular.module('starter.services', [])
     }
   }])
 
-    .service('MapService', ['$http', '$q', function($http, $q) {
+    .service('MapService', ['$http', '$q', function($q) {
         return {
-            getMap: function () {
-                    var mapOptions = {
-                        zoom: 8,
-                        center: new google.maps.LatLng(-34.397, 150.644)
+            traceRoute: function (directionsDisplay, origin, destination) {
+                var directionsService = new google.maps.DirectionsService();
+                var request = {
+                        origin:origin,
+                        destination:destination,
+                        travelMode: google.maps.TravelMode.WALKING
                     };
+                    directionsService.route(request, function(response, status) {
+                        if (status == google.maps.DirectionsStatus.OK) {
+                            directionsDisplay.setDirections(response);
+                        }
+                    });
+                },
+            initMap : function(id,centerPos) {
+                var directionsService = new google.maps.DirectionsService();
+                var directionsDisplay;
+
+                directionsDisplay = new google.maps.DirectionsRenderer();
+                var mapOptions = {
+                    center: centerPos,
+                    zoom: 8
+                };
+                map = new google.maps.Map(document.getElementById(id),
+                    mapOptions);
+                directionsDisplay.setMap(map);
+                return directionsDisplay;
             }
-        }
+            }
     }]);
