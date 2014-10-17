@@ -19,34 +19,35 @@ angular.module('starter.services', [])
     }
   }])
 
-    .service('MapService', ['$http', '$q', function($q) {
-        return {
-            traceRoute: function (directionsDisplay, origin, destination) {
-                var directionsService = new google.maps.DirectionsService();
-                var request = {
-                        origin:origin,
-                        destination:destination,
-                        travelMode: google.maps.TravelMode.WALKING
-                    };
-                    directionsService.route(request, function(response, status) {
-                        if (status == google.maps.DirectionsStatus.OK) {
-                            directionsDisplay.setDirections(response);
-                        }
-                    });
-                },
-            initMap : function(id,centerPos) {
-                var directionsService = new google.maps.DirectionsService();
-                var directionsDisplay;
+  .service('MapService', ['$http', '$q', function() {
+    return {
+      traceRoute: function (directionsDisplay, originJSON, destinationJSON) {
+        var origin = new google.maps.LatLng(originJSON.latitude, originJSON.longitude);
+        var destination = new google.maps.LatLng(destinationJSON.latitude, destinationJSON.longitude);
+        var directionsService = new google.maps.DirectionsService();
+        var request = {
+          origin:origin,
+          destination:destination,
+          travelMode: google.maps.TravelMode.WALKING
+        };
+        directionsService.route(request, function(response, status) {
+          if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+          }
+        });
+      },
+      initMap : function(id,centerPos) {
+        var directionsDisplay;
 
-                directionsDisplay = new google.maps.DirectionsRenderer();
-                var mapOptions = {
-                    center: centerPos,
-                    zoom: 8
-                };
-                map = new google.maps.Map(document.getElementById(id),
-                    mapOptions);
-                directionsDisplay.setMap(map);
-                return directionsDisplay;
-            }
-            }
-    }]);
+        directionsDisplay = new google.maps.DirectionsRenderer();
+        var mapOptions = {
+          center: centerPos,
+          zoom: 8
+        };
+        map = new google.maps.Map(document.getElementById(id),
+          mapOptions);
+        directionsDisplay.setMap(map);
+        return directionsDisplay;
+      }
+    }
+  }]);
