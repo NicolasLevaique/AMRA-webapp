@@ -47,11 +47,27 @@ angular.module('starter.controllers', [])
   .controller('PlaylistCtrl', function($scope, $stateParams) {
   })
 
-  .controller('PathsCtrl', function($scope, PathsService) {
+  .controller('PathsCtrl', function($scope, PathsService, MapService) {
     $scope.title = 'toto';
     var init = function() {
-      PathsService.getPath('ed294220-4d3f-11e4-916c-0800200c9a66').then(function (path) {
-        $scope.title = path.title;
+      PathsService.getPath('fa74e5af-f581-4bee-8498-dc6f4d653c78').then(function (path) {
+        $scope.path = path;
+        var centerPos = { lat: 37.7699298,  lng: -122.4469157};
+        var directionDisplay = MapService.initMap('map', centerPos);
+
+        var calcRoute = function(position) {
+          console.dir(position);
+          var origin = {"latitude":position.coords.latitude, "longitude": position.coords.longitude};
+          var destination = {"latitude":path.checkpoints[0].latitude, "longitude": path.checkpoints[0].longitude};
+          MapService.traceRoute(directionDisplay, origin, destination);
+        };
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(calcRoute);
+        } else {
+          alert("your browser doesn't support %GeoLocation");
+        }
+
+//        calcRoute();
       });
     };
     init();
