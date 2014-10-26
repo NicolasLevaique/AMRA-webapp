@@ -49,28 +49,41 @@ angular.module('starter.controllers', [])
 
   .controller('PathsCtrl', function($scope, PathsService, MapService) {
     $scope.title = 'toto';
+    var directionDisplay = null;
     var init = function() {
       PathsService.getPath('fa74e5af-f581-4bee-8498-dc6f4d653c78').then(function (path) {
         $scope.path = path;
+        //TODO: center map based on position
         var centerPos = { lat: 37.7699298,  lng: -122.4469157};
-        var directionDisplay = MapService.initMap('map', centerPos);
+        directionDisplay = MapService.initMap('map', centerPos);
 
-        var calcRoute = function(position) {
+        var computeRoadFromPositionToFirstCheckPoint = function(position) {
           console.dir(position);
           var origin = {"latitude":position.coords.latitude, "longitude": position.coords.longitude};
           var destination = {"latitude":path.checkpoints[0].latitude, "longitude": path.checkpoints[0].longitude};
           MapService.traceRoute(directionDisplay, origin, destination);
         };
         if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(calcRoute);
+          navigator.geolocation.getCurrentPosition(computeRoadFromPositionToFirstCheckPoint);
         } else {
           alert("your browser doesn't support %GeoLocation");
         }
-
-//        calcRoute();
       });
     };
     init();
+
+    $scope.goToNextCheckpoint = function(position, nextCheckpoint) {
+      var computeRoadToNextCheckpoint = function (position) {
+        var coordinates = PathsService.getCheckpointCoordinates(nextCheckpoint);
+        var origin = {"latitude": position.coords.latitude, "longitude": position.coords.longitude};
+        MapService.traceRoute(directionDisplay, origin, coordinates);
+      };
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(computeRoadToNextCheckpoint);
+      } else {
+        alert("your browser doesn't support %GeoLocation");
+      }
+    };
   })
 
   .controller('MapCtrl', function($scope, MapService) {
