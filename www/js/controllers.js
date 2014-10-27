@@ -48,7 +48,6 @@ angular.module('starter.controllers', [])
   })
 
   .controller('PathsCtrl', function($scope, PathsService, MapService) {
-    $scope.title = 'toto';
     var directionDisplay = null;
     var init = function() {
       PathsService.getPath('fa74e5af-f581-4bee-8498-dc6f4d653c78').then(function (path) {
@@ -64,7 +63,8 @@ angular.module('starter.controllers', [])
           MapService.traceRoute(directionDisplay, origin, destination);
         };
         if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(computeRoadFromPositionToFirstCheckPoint);
+          var options = {enableHighAccuracy: true,timeout:2000};
+          navigator.geolocation.watchPosition(computeRoadFromPositionToFirstCheckPoint, null /*TODO: errorhandler ! */, options);
         } else {
           alert("your browser doesn't support %GeoLocation");
         }
