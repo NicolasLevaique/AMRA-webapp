@@ -61,7 +61,7 @@ angular.module('starter.controllers', [])
     .controller('PlaylistCtrl', function ($scope, $stateParams, PathsService, PlaylistService) {
 
 
-      PathsService.getPath('7858fd91-8ab8-4dde-9b9b-0763b8a9506d').then(function (path) {
+      PathsService.getPath('fa74e5af-f581-4bee-8498-dc6f4d653c78').then(function (path) {
         $scope.path = path;
         $scope.checkpoints = path.checkpoints;
         $scope.title = "test";
@@ -76,7 +76,7 @@ angular.module('starter.controllers', [])
   .controller('PathsCtrl', function($scope, PathsService, MapService) {
     var directionDisplay = null;
     var init = function() {
-      PathsService.getPath('9dcfb9ec-4fea-44b1-9620-20dab6252660').then(function (path) {
+      PathsService.getPath('fa74e5af-f581-4bee-8498-dc6f4d653c78').then(function (path) {
         $scope.path = path;
         //TODO: center map based on position
         var centerPos = { lat: 37.7699298,  lng: -122.4469157};
