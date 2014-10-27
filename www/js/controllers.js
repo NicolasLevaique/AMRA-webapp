@@ -35,22 +35,48 @@ angular.module('starter.controllers', [])
 
   .controller('PlaylistsCtrl', function($scope) {
     $scope.playlists = [
-      { title: 'Reggae', id: 1 },
-      { title: 'Chill', id: 2 },
-      { title: 'Dubstep', id: 3 },
-      { title: 'Indie', id: 4 },
-      { title: 'Rap', id: 5 },
-      { title: 'Cowbell', id: 6 }
+      { title: 'path 1', pic : 'path1.jpg' , id: 1},
+      { title: 'path 2', pic : 'path2.jpg' , id: 2},
+      { title: 'path 3', pic : 'path3.jpg' , id: 3 },
+      { title: 'Path 4', pic : 'path4.jpg' , id: 4 },
+      { title: 'Path 5', pic : 'path5.jpg' , id: 5 },
+      { title: 'Path 6', pic : 'path6.jpg' , id: 6 }
     ];
   })
 
-  .controller('PlaylistCtrl', function($scope, $stateParams) {
-  })
+ // .controller('PlaylistCtrl', function($scope, $stateParams) {
+   //   //$scope.playlist = playlist;
+    //})
+
+   // .controller('PlaylistCtrl', function ($scope, $stateParams, PlaylistService) {
+     // PlaylistService.findById($stateParams.playlistId).then(function(playlist) {
+       // $scope.checkpoints = [
+         // { title : 'checkpoint 1', pic : 'path1.jpg' , id: 1},
+          //{ title : 'checkpoint 2', pic : 'path2.jpg' , id: 2}
+        //]
+        //$scope.playlist = playlist;
+      //});
+    //})
+
+    .controller('PlaylistCtrl', function ($scope, $stateParams, PathsService, PlaylistService) {
+
+
+      PathsService.getPath('7858fd91-8ab8-4dde-9b9b-0763b8a9506d').then(function (path) {
+        $scope.path = path;
+        $scope.checkpoints = path.checkpoints;
+        $scope.title = "test";
+      });
+
+      PlaylistService.findById($stateParams.playlistId).then(function(playlist) {
+        //$scope.checkpoints[0] =
+        $scope.playlist = playlist;
+      });
+         })
 
   .controller('PathsCtrl', function($scope, PathsService, MapService) {
     var directionDisplay = null;
     var init = function() {
-      PathsService.getPath('fa74e5af-f581-4bee-8498-dc6f4d653c78').then(function (path) {
+      PathsService.getPath('9dcfb9ec-4fea-44b1-9620-20dab6252660').then(function (path) {
         $scope.path = path;
         //TODO: center map based on position
         var centerPos = { lat: 37.7699298,  lng: -122.4469157};
@@ -85,6 +111,8 @@ angular.module('starter.controllers', [])
       }
     };
   })
+
+
 
   .controller('MapCtrl', function($scope, MapService) {
     var centerPos = { lat: 37.7699298,  lng: -122.4469157};

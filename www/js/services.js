@@ -13,6 +13,8 @@ angular.module('starter.services', [])
     }
   }])
 
+
+
   .service('PathsService', ['$http', '$q', 'Environment', function($http, $q, Environment) {
     var currentPath = null;
     return {
@@ -64,4 +66,31 @@ angular.module('starter.services', [])
         return directionsDisplay;
       }
     }
-  }]);
+  }])
+
+    .factory('PlaylistService', function($q) {
+      var playlists = [
+        { title: 'path 1', pic : 'path1.jpg' , id: 1},
+        { title: 'path 2', pic : 'path2.jpg' , id: 2},
+        { title: 'path 3', pic : 'path3.jpg' , id: 3 },
+        { title: 'Path 4', pic : 'path4.jpg' , id: 4 },
+        { title: 'Path 5', pic : 'path5.jpg' , id: 5 },
+        { title: 'Path 6', pic : 'path6.jpg' , id: 6 }
+      ];
+
+      return {
+        findAll: function() {
+          var deferred = $q.defer();
+          deferred.resolve(playlists);
+          return deferred.promise;
+        },
+
+        findById: function(playlistId) {
+          var deferred = $q.defer();
+          var playlist = playlists[playlistId - 1];
+          deferred.resolve(playlist);
+          return deferred.promise;
+        }
+    }
+
+    });
