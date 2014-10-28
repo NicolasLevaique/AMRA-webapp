@@ -65,7 +65,18 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
           controller: 'PlaylistCtrl'
         }
       }
-    });
+    })
+
+      .state('app.checkpointView', {
+        url: "/checkpointView",
+        views: {
+          'menuContent' :{
+            templateUrl: "templates/checkpointView.html",
+            controller: 'CheckPointCtrl'
+          }
+        }
+      })
+  ;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/playlists');
 });
