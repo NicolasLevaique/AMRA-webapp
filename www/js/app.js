@@ -20,7 +20,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $logProvider, $urlRouterProvider) {
   $stateProvider
     .state('app', {
       url: "/app",
@@ -79,4 +79,5 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
   ;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/playlists');
+  $logProvider.debugEnabled(true);
 });
