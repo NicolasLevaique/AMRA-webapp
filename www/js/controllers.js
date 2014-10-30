@@ -73,23 +73,25 @@ angular.module('starter.controllers', [])
       });
          })
 
-  .controller('PathsCtrl', function($scope, PathsService, MapService) {
+  .controller('PathsCtrl', function($scope, $log, PathsService, MapService) {
     var directionDisplay = null;
+    var GeoMarker;
     var init = function() {
-      PathsService.getPath('fa74e5af-f581-4bee-8498-dc6f4d653c78').then(function (path) {
+      PathsService.getPath('dd2f9822-3a64-47ef-8595-942fd9c86162').then(function (path) {
         $scope.path = path;
         //TODO: center map based on position
         var centerPos = { lat: 37.7699298,  lng: -122.4469157};
         directionDisplay = MapService.initMap('map', centerPos);
         //Displaying the position on the maps
-          var GeoMarker = new GeolocationMarker();
+          //To access the position, use GeoMarker.getPosition();
+         GeoMarker = new GeolocationMarker();
           GeoMarker.setCircleOptions({fillColor: '#808080'});
 
           google.maps.event.addListenerOnce(GeoMarker, 'position_changed', function() {
               map.setCenter(this.getPosition());
               map.fitBounds(this.getBounds());
           });
-          GeoMarker.setMap(map);
+         GeoMarker.setMap(map);
 
         var computeRoadFromPositionToFirstCheckPoint = function(position) {
           console.dir(position);
@@ -99,7 +101,7 @@ angular.module('starter.controllers', [])
         };
         if (navigator.geolocation) {
           var options = {enableHighAccuracy: true,timeout:2000};
-          navigator.geolocation.watchPosition(computeRoadFromPositionToFirstCheckPoint, null /*TODO: errorhandler ! */, options);
+          navigator.geolocation.getCurrentPosition(computeRoadFromPositionToFirstCheckPoint, null /*TODO: errorhandler ! */, options);
         } else {
           alert("your browser doesn't support %GeoLocation");
         }
@@ -112,12 +114,14 @@ angular.module('starter.controllers', [])
     $scope.goToNextCheckpoint = function(position, nextCheckpoint) {
       var computeRoadToNextCheckpoint = function (position) {
         var coordinates = PathsService.getCheckpointCoordinates(nextCheckpoint);
-        var origin = {"latitude": position.coords.latitude, "longitude": position.coords.longitude};
+        var origin = {"latitude": position.lat(), "longitude": position.lng()};
         MapService.traceRoute(directionDisplay, origin, coordinates);
       };
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(computeRoadToNextCheckpoint);
+      var position = GeoMarker.getPosition();
+      if (position != null) {
+         computeRoadToNextCheckpoint(GeoMarker.getPosition());
       } else {
+          $log.debug("position null");
         alert("your browser doesn't support %GeoLocation");
       }
     };
