@@ -81,6 +81,15 @@ angular.module('starter.controllers', [])
         //TODO: center map based on position
         var centerPos = { lat: 37.7699298,  lng: -122.4469157};
         directionDisplay = MapService.initMap('map', centerPos);
+        //Displaying the position on the maps
+          var GeoMarker = new GeolocationMarker();
+          GeoMarker.setCircleOptions({fillColor: '#808080'});
+
+          google.maps.event.addListenerOnce(GeoMarker, 'position_changed', function() {
+              map.setCenter(this.getPosition());
+              map.fitBounds(this.getBounds());
+          });
+          GeoMarker.setMap(map);
 
         var computeRoadFromPositionToFirstCheckPoint = function(position) {
           console.dir(position);
@@ -94,6 +103,8 @@ angular.module('starter.controllers', [])
         } else {
           alert("your browser doesn't support %GeoLocation");
         }
+
+//        calcRoute();
       });
     };
     init();
