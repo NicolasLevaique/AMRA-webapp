@@ -44,36 +44,47 @@ angular.module('starter.controllers', [])
     ];
   })
 
- // .controller('PlaylistCtrl', function($scope, $stateParams) {
-   //   //$scope.playlist = playlist;
-    //})
+  // .controller('PlaylistCtrl', function($scope, $stateParams) {
+  //   //$scope.playlist = playlist;
+  //})
 
-   // .controller('PlaylistCtrl', function ($scope, $stateParams, PlaylistService) {
-     // PlaylistService.findById($stateParams.playlistId).then(function(playlist) {
-       // $scope.checkpoints = [
-         // { title : 'checkpoint 1', pic : 'path1.jpg' , id: 1},
-          //{ title : 'checkpoint 2', pic : 'path2.jpg' , id: 2}
-        //]
-        //$scope.playlist = playlist;
-      //});
-    //})
+  // .controller('PlaylistCtrl', function ($scope, $stateParams, PlaylistService) {
+  // PlaylistService.findById($stateParams.playlistId).then(function(playlist) {
+  // $scope.checkpoints = [
+  // { title : 'checkpoint 1', pic : 'path1.jpg' , id: 1},
+  //{ title : 'checkpoint 2', pic : 'path2.jpg' , id: 2}
+  //]
+  //$scope.playlist = playlist;
+  //});
+  //})
 
-    .controller('PlaylistCtrl', function ($scope, $stateParams, PathsService, PlaylistService) {
+  .controller('HomeCtrl', function ($scope, $stateParams, PathsService, PlaylistService) {
 
+    var init = function() {
+      if (navigator.geolocation) {
+//      var options = {enableHighAccuracy: true,timeout:2000};
+        navigator.geolocation.getCurrentPosition(suggestPaths);
+      } else {
+        alert("your browser doesn't support %GeoLocation");
+      }
+    };
 
-      PathsService.getPath('fa74e5af-f581-4bee-8498-dc6f4d653c78').then(function (path) {
-        $scope.path = path;
-        $scope.checkpoints = path.checkpoints;
-        $scope.title = "test";
+    var suggestPaths = function(position) {
+      PathsService.getSuggestedPaths(position, 20000).then(function (result) {
+        console.dir(result.paths);
+        $scope.suggestedPaths = result.paths;
       });
+    };
 
-      PlaylistService.findById($stateParams.playlistId).then(function(playlist) {
-        //$scope.checkpoints[0] =
-        $scope.playlist = playlist;
-      });
-         })
+    init();
 
-  .controller('PathsCtrl', function($scope, PathsService, MapService) {
+    PlaylistService.findById($stateParams.pathId).then(function(playlist) {
+      //$scope.checkpoints[0] =
+      $scope.playlist = playlist;
+    });
+  })
+
+  .controller('PathsCtrl', function($scope, PathService, MapService) {
     var directionDisplay = null;
     var init = function() {
       /** Converts numeric degrees to radians */
@@ -84,7 +95,7 @@ angular.module('starter.controllers', [])
       }
 
 
-      PathsService.getPath('fa74e5af-f581-4bee-8498-dc6f4d653c78').then(function (path) {
+      PathService.getPath('fa74e5af-f581-4bee-8498-dc6f4d653c78').then(function (path) {
         $scope.path = path;
         var watchPositionId = null;
         //TODO: center map based on position
@@ -121,7 +132,7 @@ angular.module('starter.controllers', [])
 
     $scope.goToNextCheckpoint = function(position, nextCheckpoint) {
       var computeRoadToNextCheckpoint = function (position) {
-        var coordinates = PathsService.getCheckpointCoordinates(nextCheckpoint);
+        var coordinates = PathService.getCheckpointCoordinates(nextCheckpoint);
         var origin = {"latitude": position.coords.latitude, "longitude": position.coords.longitude};
         MapService.traceRoute(directionDisplay, origin, coordinates);
       };

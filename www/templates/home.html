@@ -1,4 +1,4 @@
-<ion-view title="Playlists">
+<ion-view title="Home">
 
   <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
@@ -23,7 +23,7 @@
       <a class="item item-icon-left assertive" href="#">
         <i class="icon"></i>
         Getting Started !
-        <p> Here are some selected paths to begin </p>
+        <p> Here are some selected paths to begin with</p>
       </a>
 
     </div>
@@ -40,10 +40,10 @@
         </div>
 -->
 
-      <ion-item ng-repeat="playlist in playlists" href="#/app/playlists/{{playlist.id}}">
-        <img src="../img/{{playlist.pic }}" width="50" height="50"/>
-       <h4> {{playlist.title}} </h4>
-        <p> description </p>
+      <ion-item ng-repeat="path in suggestedPaths" href="#/app/path/{{path.id}}">
+        <img src="../img/city_tour.jpg" width="50" height="50"/>
+       <h4> {{path.title}} </h4>
+        <p> {{path.description}} </p>
       </ion-item>
 
     </div>

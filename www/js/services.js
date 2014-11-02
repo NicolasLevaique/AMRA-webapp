@@ -15,12 +15,11 @@ angular.module('starter.services', [])
 
 
 
-  .service('PathsService', ['$http', '$q', 'Environment', function($http, $q, Environment) {
+  .service('PathService', ['$http', '$q', 'Environment', function($http, $q, Environment) {
     var currentPath = null;
     return {
       getPath: function (pathId) {
         var deferred = $q.defer();
-        //ed294220-4d3f-11e4-916c-0800200c9a66
         $http.get(Environment.backend + 'paths/' + pathId).success(function (path) {
           currentPath = path;
           deferred.resolve(path);
@@ -31,6 +30,21 @@ angular.module('starter.services', [])
       },
       getCheckpointCoordinates: function (checkpoint) {
         return {"latitude":currentPath.checkpoints[checkpoint].latitude, "longitude": currentPath.checkpoints[checkpoint].longitude}
+      }
+    }
+  }])
+
+  .service('PathsService', ['$http', '$q', 'Environment', function($http, $q, Environment) {
+    return {
+      getSuggestedPaths: function (position, distance) {
+        var deferred = $q.defer();
+        $http.get(Environment.backend + 'paths/?lat=' + position.coords.latitude +
+          '&long=' + position.coords.longitude + '&dist=' + distance).success(function (paths) {
+          deferred.resolve(paths);
+        }).error(function (err, status) {
+          deferred.reject(status);
+        });
+        return deferred.promise;
       }
     }
   }])
