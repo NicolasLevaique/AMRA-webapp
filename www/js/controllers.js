@@ -76,8 +76,17 @@ angular.module('starter.controllers', [])
   .controller('PathsCtrl', function($scope, PathsService, MapService) {
     var directionDisplay = null;
     var init = function() {
+      /** Converts numeric degrees to radians */
+      if (typeof(Number.prototype.toRad) === "undefined") {
+        Number.prototype.toRad = function() {
+          return this * Math.PI / 180;
+        }
+      }
+
+
       PathsService.getPath('fa74e5af-f581-4bee-8498-dc6f4d653c78').then(function (path) {
         $scope.path = path;
+        var watchPositionId = null;
         //TODO: center map based on position
         var centerPos = { lat: 37.7699298,  lng: -122.4469157};
         directionDisplay = MapService.initMap('map', centerPos);
@@ -86,11 +95,23 @@ angular.module('starter.controllers', [])
           console.dir(position);
           var origin = {"latitude":position.coords.latitude, "longitude": position.coords.longitude};
           var destination = {"latitude":path.checkpoints[0].latitude, "longitude": path.checkpoints[0].longitude};
-          MapService.traceRoute(directionDisplay, origin, destination);
+
+          // check http://www.movable-type.co.uk/scripts/latlong.html for more info
+          var φ1 = position.coords.latitude.toRad();
+          var φ2 = path.checkpoints[0].latitude.toRad();
+          var Δλ = (path.checkpoints[0].longitude-position.coords.longitude).toRad();
+          var R = 6371; // earth's radius, gives d in km
+          var d = Math.acos( Math.sin(φ1)*Math.sin(φ2) + Math.cos(φ1)*Math.cos(φ2) * Math.cos(Δλ) ) * R;
+          if (d > 0.3) {
+            MapService.traceRoute(directionDisplay, origin, destination);
+          }
+          else {
+            navigator.geolocation.clearWatch(watchPositionId);
+          }
         };
         if (navigator.geolocation) {
           var options = {enableHighAccuracy: true,timeout:2000};
-          navigator.geolocation.watchPosition(computeRoadFromPositionToFirstCheckPoint, null /*TODO: errorhandler ! */, options);
+          watchPositionId = navigator.geolocation.watchPosition(computeRoadFromPositionToFirstCheckPoint, null /*TODO: errorhandler ! */, options);
         } else {
           alert("your browser doesn't support %GeoLocation");
         }
