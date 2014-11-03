@@ -148,12 +148,14 @@ angular.module('starter.controllers', [])
             var checkpoint ={
                 name : ''
             }
-            $scope.path.checkpoints.push(checkpoint);
+            $scope.path.checkpoints.push(checkpoint)
         }
 
         $scope.publishPath = function () {
             var pathJSON = angular.toJson($scope.path);
             $log.debug(pathJSON);
-           // PostService.postPath(pathJSON);
+           PostService.postPath(pathJSON).then(function (status) {
+               $log.debug("Path posted successfully");
+           });
         }
     });
