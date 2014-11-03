@@ -138,4 +138,22 @@ angular.module('starter.controllers', [])
       var destination = {"latitude": 37.7683909618184, "longitude": -122.51089453697205};
       MapService.traceRoute(directionDisplay, origin, destination);
     }
-  });
+  })
+
+    .controller('AdminCtrl', function($scope, $log, PostService) {
+        $scope.path = {
+            'checkpoints' : []
+        };
+        $scope.addCheckpoint = function() {
+            var checkpoint ={
+                name : ''
+            }
+            $scope.path.checkpoints.push(checkpoint);
+        }
+
+        $scope.publishPath = function () {
+            var pathJSON = angular.toJson($scope.path);
+            $log.debug(pathJSON);
+           // PostService.postPath(pathJSON);
+        }
+    });
