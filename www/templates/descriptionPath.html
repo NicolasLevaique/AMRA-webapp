@@ -1,0 +1,33 @@
+<ion-view title="Path" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+    <ion-content class="has-header">
+
+
+        <div>
+            {{path.description}}
+        </div>
+        <div>
+            <h4> Here are the checkpoints you can visit with this path </h4>
+            </hr>
+        </div>
+
+
+        <ion-list class="list">
+            <ion-item ng-repeat="checkpoint in path.checkpoints" >
+                <!--<img src="../img/{{checkpoint.pic }}" width="50" height="50"/> -->
+                <h4> {{checkpoint.name}} </h4>
+
+                <p> {{checkpoint.description}} </p>
+
+            </ion-item>
+
+            <!--<ion-list class="list">
+              <ion-item ng-repeat="checkpoint in checkpoints" >
+                <img src="../img/{{checkpoint.pic }}" width="50" height="50"/>
+                <h4> {{checkpoint.title}} </h4>
+                <p> description </p>
+              </ion-item>-->
+
+
+        </ion-list>
+    </ion-content>
+</ion-view>

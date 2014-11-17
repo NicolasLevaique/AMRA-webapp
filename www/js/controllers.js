@@ -58,7 +58,7 @@ angular.module('starter.controllers', [])
   //});
   //})
 
-  .controller('HomeCtrl', function ($scope, $stateParams, PathsService, PlaylistService) {
+  .controller('HomeCtrl', function ($scope, $stateParams, /*suggestedPaths, toto, position,*/ PathsService, PlaylistService) {
 
     var init = function() {
       if (navigator.geolocation) {
@@ -70,21 +70,24 @@ angular.module('starter.controllers', [])
     };
 
     var suggestPaths = function(position) {
-      PathsService.getSuggestedPaths(position, 20000).then(function (result) {
+      PathsService.getSuggestedPaths(position, 200000).then(function (result) {
         console.dir(result.paths);
         $scope.suggestedPaths = result.paths;
       });
     };
 
-    init();
+//    console.dir(suggestedPaths);
+//    console.dir(position);
+//
+//    $scope.suggestedPaths = suggestedPaths;
+//    $scope.toto = toto;
 
-    PlaylistService.findById($stateParams.pathId).then(function(playlist) {
-      //$scope.checkpoints[0] =
-      $scope.playlist = playlist;
-    });
+    init();
   })
 
-  .controller('PathsCtrl', function($scope, PathService, MapService) {
+  .controller('PathsCtrl', function($scope, PathService, MapService, $stateParams) {
+    $scope.toggleView = true;
+
     var directionDisplay = null;
     var init = function() {
       /** Converts numeric degrees to radians */
@@ -95,7 +98,7 @@ angular.module('starter.controllers', [])
       }
 
 
-      PathService.getPath('fa74e5af-f581-4bee-8498-dc6f4d653c78').then(function (path) {
+      PathService.getPath($stateParams.pathId).then(function (path) {
         $scope.path = path;
         var watchPositionId = null;
         //TODO: center map based on position
@@ -129,6 +132,11 @@ angular.module('starter.controllers', [])
       });
     };
     init();
+
+    $scope.changeView = function() {
+      console.dir($scope.toggleView);
+      $scope.toggleView = !$scope.toggleView;
+    };
 
     $scope.goToNextCheckpoint = function(position, nextCheckpoint) {
       var computeRoadToNextCheckpoint = function (position) {
