@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['ngGeolocation'])
+angular.module('starter.controllers', [])
 
   .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
     // Form data for the login modal
@@ -58,85 +58,42 @@ angular.module('starter.controllers', ['ngGeolocation'])
     $scope.playlists = suggestedPaths;
   })
 
-//  .controller('PathsCtrl', function($scope, PathService, MapService, $stateParams) {
-//    $scope.toggleView = true;
-//
-//    var directionDisplay = null;
-//    var init = function() {
-//      /** Converts numeric degrees to radians */
-//      if (typeof(Number.prototype.toRad) === "undefined") {
-//        Number.prototype.toRad = function() {
-//          return this * Math.PI / 180;
-//        }
-//      }
-//
-//
-//      PathService.getPath($stateParams.pathId).then(function (path) {
-//        $scope.path = path;
-//        var watchPositionId = null;
-//        //TODO: center map based on position
-//        var centerPos = { lat: 37.7699298,  lng: -122.4469157};
-//        directionDisplay = MapService.initMap('map', centerPos);
-//
-//        var computeRoadFromPositionToFirstCheckPoint = function(position) {
-//          console.dir(position);
-//          var origin = {"latitude":position.coords.latitude, "longitude": position.coords.longitude};
-//          var destination = {"latitude":path.checkpoints[0].latitude, "longitude": path.checkpoints[0].longitude};
-//
-//          // check http://www.movable-type.co.uk/scripts/latlong.html for more info
-//          var φ1 = position.coords.latitude.toRad();
-//          var φ2 = path.checkpoints[0].latitude.toRad();
-//          var Δλ = (path.checkpoints[0].longitude-position.coords.longitude).toRad();
-//          var R = 6371; // earth's radius, gives d in km
-//          var d = Math.acos( Math.sin(φ1)*Math.sin(φ2) + Math.cos(φ1)*Math.cos(φ2) * Math.cos(Δλ) ) * R;
-//          if (d > 0.3) {
-//            MapService.traceRoute(directionDisplay, origin, destination);
-//          }
-//          else {
-//            navigator.geolocation.clearWatch(watchPositionId);
-//          }
-//        };
-//        if (navigator.geolocation) {
-//          var options = {enableHighAccuracy: true,timeout:2000};
-//          watchPositionId = navigator.geolocation.watchPosition(computeRoadFromPositionToFirstCheckPoint, null /*TODO: errorhandler ! */, options);
-//        } else {
-//          alert("your browser doesn't support %GeoLocation");
-//        }
-//      });
-//    };
-//    init();
-//
-//    $scope.changeView = function() {
-//      console.dir($scope.toggleView);
-//      $scope.toggleView = !$scope.toggleView;
-//    };
-//
-//    $scope.goToNextCheckpoint = function(position, nextCheckpoint) {
-//      var computeRoadToNextCheckpoint = function (position) {
-//        var coordinates = PathService.getCheckpointCoordinates(nextCheckpoint);
-//        var origin = {"latitude": position.coords.latitude, "longitude": position.coords.longitude};
-//        MapService.traceRoute(directionDisplay, origin, coordinates);
-//      };
-//      if (navigator.geolocation) {
-//        navigator.geolocation.getCurrentPosition(computeRoadToNextCheckpoint);
-//      } else {
-//        alert("your browser doesn't support %GeoLocation");
-//      }
-//    };
-  .controller('PathCtrl', function($scope, path, PathService, MapService, $stateParams) {
-    $scope.path = path;
-  })
+   // .controller('PlaylistCtrl', function ($scope, $stateParams, PlaylistService) {
+     // PlaylistService.findById($stateParams.playlistId).then(function(playlist) {
+       // $scope.checkpoints = [
+         // { title : 'checkpoint 1', pic : 'path1.jpg' , id: 1},
+          //{ title : 'checkpoint 2', pic : 'path2.jpg' , id: 2}
+        //]
+        //$scope.playlist = playlist;
+      //});
+    //})
 
   .controller('FollowPathCtrl', function($scope, path, PathService, MapService, $geolocation, $stateParams) {
     $scope.path = path;
     var directionDisplay = null;
+    var GeoMarker;
     var init = function() {
+      GeoMarker = new GeolocationMarker();
+      GeoMarker.setCircleOptions({fillColor: '#808080'});
+
+      google.maps.event.addListenerOnce(GeoMarker, 'position_changed', function() {
+        map.setCenter(this.getPosition());
+        map.fitBounds(this.getBounds());
+      });
+      GeoMarker.setMap(map);
+      
       /** Converts numeric degrees to radians */
       if (typeof(Number.prototype.toRad) === "undefined") {
         Number.prototype.toRad = function() {
           return this * Math.PI / 180;
         }
       }
+      
+      PathsService.getPath('fa74e5af-f581-4bee-8498-dc6f4d653c78').then(function (path) {
+        $scope.path = path;
+        //TODO: center map based on position
+        var centerPos = { lat: 37.7699298,  lng: -122.4469157};
+        directionDisplay = MapService.initMap('map', centerPos);
 
 
       var watchPositionId = null;
@@ -187,8 +144,19 @@ angular.module('starter.controllers', ['ngGeolocation'])
 
       });
 
-
-
+    $scope.goToNextCheckpoint = function(position, nextCheckpoint) {
+      var computeRoadToNextCheckpoint = function (position) {
+        var coordinates = PathsService.getCheckpointCoordinates(nextCheckpoint);
+        var origin = {"latitude": position.lat(), "longitude": position.lng()};
+        MapService.traceRoute(directionDisplay, origin, coordinates);
+      };
+      var position = GeoMarker.getPosition();
+      if (position != null) {
+         computeRoadToNextCheckpoint(GeoMarker.getPosition());
+      } else {
+          $log.debug("position null");
+        alert("your browser doesn't support %GeoLocation");
+      }
     };
     init();
   })
@@ -204,4 +172,24 @@ angular.module('starter.controllers', ['ngGeolocation'])
       var destination = {"latitude": 37.7683909618184, "longitude": -122.51089453697205};
       MapService.traceRoute(directionDisplay, origin, destination);
     }
-  });
+  });  })
+
+    .controller('AdminCtrl', function($scope, $log, PostService) {
+        $scope.path = {
+            'checkpoints' : []
+        };
+        $scope.addCheckpoint = function() {
+            var checkpoint ={
+                name : ''
+            }
+            $scope.path.checkpoints.push(checkpoint)
+        }
+
+        $scope.publishPath = function () {
+            var pathJSON = angular.toJson($scope.path);
+            $log.debug(pathJSON);
+           PostService.postPath(pathJSON).then(function (status) {
+               $log.debug("Path posted successfully");
+           });
+        }
+    });

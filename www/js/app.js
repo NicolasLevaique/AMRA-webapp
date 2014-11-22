@@ -82,45 +82,20 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
           return PathService.getPath($stateParams.pathId);
         }
       }
-//      ,
-//      resolve: {
-//        path: function($stateParams, PathService) {
-//          console.log('toto');
-//          return PathService.getPath($stateParams.pathId)
-//        }
-//      }
     })
-//    .state('app.playlists', {
-//      url: "/playlists",
-//      views: {
-//        'menuContent' :{
-//          templateUrl: "templates/path.html",
-//          controller: 'PlaylistsCtrl'
-//        }
-//      }
-//    })
-//
-//    .state('app.single', {
-//      url: "/home/:pathId",
-//      views: {
-//        'menuContent' :{
-//          templateUrl: "templates/followPath.html",
-//          controller: 'PlaylistCtrl'
-//        }
-//      }
-//    })
 
-//      .state('app.checkpointView', {
-//        url: "/checkpointView",
-//        views: {
-//          'menuContent' :{
-//            templateUrl: "templates/checkpointView.html",
-//            controller: 'CheckPointCtrl'
-//          }
-//        }
-//      }
-//)
-    ;
+    .state('app.admin', {
+      url: "/admin",
+      views: {
+        'menuContent' :{
+          templateUrl: "templates/admin.html",
+          controller: 'AdminCtrl'
+        }
+      }
+    })
+  ;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/home');
-});
+    $logProvider.debugEnabled(true);
+
+  });

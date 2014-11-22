@@ -34,6 +34,22 @@ angular.module('starter.services', [])
     }
   }])
 
+  .service('PostService', ['$http', '$q', 'Environment', function($http, $q, Environment) {
+    return {
+      postPath: function (jsonPath) {
+        var deferred = $q.defer();
+        //ed294220-4d3f-11e4-916c-0800200c9a66
+        $http.post(Environment.backend + "paths", jsonPath)
+          .success(function (status) {
+            deferred.resolve();
+          }).error(function (err, status) {
+            deferred.reject(status);
+          });
+        return deferred.promise;
+      }
+    }
+  }])
+
   .service('PathsService', ['$http', '$q', 'Environment', function($http, $q, Environment) {
     return {
       getSuggestedPaths: function (position, distance) {

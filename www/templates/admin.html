@@ -1,0 +1,45 @@
+<ion-view title="admin">
+
+
+    <ion-nav-buttons side="left">
+        <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+    </ion-nav-buttons>
+    <!--  <ion-content class="has-header">
+      <ion-list>
+        <ion-item ng-repeat="playlist in playlists" href="#/app/playlists/{{playlist.id}}">
+          {{playlist.title}}
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  -->
+
+    <ion-content class="has-header"  scrollbar-x="true" padding="true">
+        <h1 class="title">Create a path</h1>
+
+
+        <form name="form" novalidate class="simple-form">
+            Name:
+            <input type="text" ng-model="path.name"  required /><br />
+            Description :
+            <input type="text" ng-model="path.description" required/><br />
+
+            <button ng-click="publishPath()"
+                    ng-disabled="form.$invalid ">SAVE PATH</button>
+            </form>
+            <button ng-click="addCheckpoint()">Add Checkpoint</button>
+
+            <ion-item ng-repeat="checkpoint in path.checkpoints" >
+                <h4> New Checkpoint </h4>
+                <form name="form" novalidate class="simple-form">
+                    Name:
+                    <input type="text" ng-model="checkpoint.name"  required /><br />
+                    Description :
+                    <input type="text" ng-model="checkpoint.description" required/><br />
+                    Position :
+                    <input type="text" ng-model="checkpoint.position" required/><br />
+                </form>
+                <button ng-click="addCheckpoint()">Add Checkpoint</button>
+            </ion-item>
+        </div>
+    </ion-content>
+</ion-view>
