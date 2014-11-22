@@ -20,7 +20,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $logProvider) {
   $stateProvider
     .state('app', {
       url: "/app",
@@ -36,7 +36,8 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
           templateUrl: "templates/home.html",
           controller: 'HomeCtrl'
         }
-      },
+      }
+      ,
       resolve: {
         position: function($geolocation) {
           return $geolocation.getCurrentPosition();

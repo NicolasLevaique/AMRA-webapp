@@ -9,7 +9,7 @@ angular.module('starter.services', [])
       //if dev
       backend: 'http://localhost:8200/api/'
       // if prod
-//      backend: 'http://etud.insa-toulouse.fr/~levaique/amra/'
+//      backend: 'http://3ma7.learning-socle.org/'
     }
   }])
 
