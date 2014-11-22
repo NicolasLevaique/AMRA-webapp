@@ -109,9 +109,9 @@ angular.module('starter.controllers', [])
 //        calcRoute();
       });
     };
-    init();
+        init();
 
-    $scope.goToNextCheckpoint = function(position, nextCheckpoint) {
+        $scope.goToNextCheckpoint = function(position, nextCheckpoint) {
       var computeRoadToNextCheckpoint = function (position) {
         var coordinates = PathsService.getCheckpointCoordinates(nextCheckpoint);
         var origin = {"latitude": position.lat(), "longitude": position.lng()};
@@ -140,22 +140,44 @@ angular.module('starter.controllers', [])
     }
   })
 
-    .controller('AdminCtrl', function($scope, $log, PostService) {
+    .controller('AdminCtrl', function($scope, $log, $animate, PostService) {
         $scope.path = {
             'checkpoints' : []
         };
+        $scope.searchBoxes = []; //list of the maps search Boxes autocomplete
+
         $scope.addCheckpoint = function() {
             var checkpoint ={
                 name : ''
-            }
-            $scope.path.checkpoints.push(checkpoint)
+            };
+            $scope.path.checkpoints.push(checkpoint);
+            $scope.searchBoxes.push();
         }
 
+        //will be executed when the ng repeat have finished being created
+        $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
+            var numCheckpoints = $scope.path.checkpoints.length - 1;
+            $scope.searchBoxes[numCheckpoints] = new google.maps.places.Autocomplete(
+                /** @type {HTMLInputElement} */(document.getElementById('autocomplete'+(numCheckpoints)))
+                );
+            //Listener calling a function when the user select one adress
+            google.maps.event.addListener($scope.searchBoxes[numCheckpoints], 'place_changed', function() {
+                retrieveLocation(numCheckpoints);
+            });
+        });
+
+        //Post the path to the backend
         $scope.publishPath = function () {
             var pathJSON = angular.toJson($scope.path);
-            $log.debug(pathJSON);
            PostService.postPath(pathJSON).then(function (status) {
                $log.debug("Path posted successfully");
+               //TODO : create a new page and redirect to it
            });
+        }
+
+        retrieveLocation = function(numCheckpoint){
+            var place = $scope.searchBoxes[numCheckpoint].getPlace();
+            $scope.path.checkpoints[numCheckpoint].longitude = place.geometry.location.lng();
+            $scope.path.checkpoints[numCheckpoint].latitude = place.geometry.location.lat();
         }
     });

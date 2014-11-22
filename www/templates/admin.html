@@ -22,13 +22,13 @@
             <input type="text" ng-model="path.name"  required /><br />
             Description :
             <input type="text" ng-model="path.description" required/><br />
-
+            Position :
             <button ng-click="publishPath()"
                     ng-disabled="form.$invalid ">SAVE PATH</button>
             </form>
             <button ng-click="addCheckpoint()">Add Checkpoint</button>
 
-            <ion-item ng-repeat="checkpoint in path.checkpoints" >
+            <ion-item ng-repeat="checkpoint in path.checkpoints" on-finish-render>
                 <h4> New Checkpoint </h4>
                 <form name="form" novalidate class="simple-form">
                     Name:
@@ -36,8 +36,9 @@
                     Description :
                     <input type="text" ng-model="checkpoint.description" required/><br />
                     Position :
-                    <input type="text" ng-model="checkpoint.position" required/><br />
+                    <input type="text" id={{"autocomplete"+$index}} required/><br />
                 </form>
+
                 <button ng-click="addCheckpoint()">Add Checkpoint</button>
             </ion-item>
         </div>
