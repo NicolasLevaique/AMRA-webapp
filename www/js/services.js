@@ -89,7 +89,7 @@ angular.module('starter.services', [])
         directionsDisplay = new google.maps.DirectionsRenderer();
         var mapOptions = {
           center: centerPos,
-          zoom: 8
+          zoom: 15
         };
         map = new google.maps.Map(document.getElementById(id),
           mapOptions);
