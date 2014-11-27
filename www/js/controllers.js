@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['ngGeolocation'])
+angular.module('starter.controllers', [])
 
   .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
     // Form data for the login modal
@@ -93,6 +93,10 @@ angular.module('starter.controllers', ['ngGeolocation'])
         //TODO: center map based on position
         var centerPos = { lat: 37.7699298, lng: -122.4469157};
         directionDisplay = MapService.initMap('map', centerPos);
+        //Displaying the position on the maps
+          //To access the position, use GeoMarker.getPosition();
+         GeoMarker = new GeolocationMarker();
+          GeoMarker.setCircleOptions({fillColor: '#808080'});
 
         GeoMarker = new GeolocationMarker();
         GeoMarker.setCircleOptions({fillColor: '#808080'});
@@ -134,6 +138,12 @@ angular.module('starter.controllers', ['ngGeolocation'])
             }
           }
         };
+        if (navigator.geolocation) {
+          var options = {enableHighAccuracy: true,timeout:2000};
+          navigator.geolocation.getCurrentPosition(computeRoadFromPositionToFirstCheckPoint, null /*TODO: errorhandler ! */, options);
+        } else {
+          alert("your browser doesn't support %GeoLocation");
+        }
 
         $geolocation.getCurrentPosition().then(function (pos) {
           watchPositionId = $geolocation.watchPosition({
@@ -178,22 +188,44 @@ angular.module('starter.controllers', ['ngGeolocation'])
     }
   })
 
-    .controller('AdminCtrl', function($scope, $log, PostService) {
+    .controller('AdminCtrl', function($scope, $log, $animate, PostService) {
         $scope.path = {
             'checkpoints' : []
         };
+        $scope.searchBoxes = []; //list of the maps search Boxes autocomplete
+
         $scope.addCheckpoint = function() {
             var checkpoint ={
                 name : ''
-            }
-            $scope.path.checkpoints.push(checkpoint)
+            };
+            $scope.path.checkpoints.push(checkpoint);
+            $scope.searchBoxes.push();
         }
 
+        //will be executed when the ng repeat have finished being created
+        $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
+            var numCheckpoints = $scope.path.checkpoints.length - 1;
+            $scope.searchBoxes[numCheckpoints] = new google.maps.places.Autocomplete(
+                /** @type {HTMLInputElement} */(document.getElementById('autocomplete'+(numCheckpoints)))
+                );
+            //Listener calling a function when the user select one adress
+            google.maps.event.addListener($scope.searchBoxes[numCheckpoints], 'place_changed', function() {
+                retrieveLocation(numCheckpoints);
+            });
+        });
+
+        //Post the path to the backend
         $scope.publishPath = function () {
             var pathJSON = angular.toJson($scope.path);
-            $log.debug(pathJSON);
            PostService.postPath(pathJSON).then(function (status) {
                $log.debug("Path posted successfully");
+               //TODO : create a new page and redirect to it
            });
+        }
+
+        retrieveLocation = function(numCheckpoint){
+            var place = $scope.searchBoxes[numCheckpoint].getPlace();
+            $scope.path.checkpoints[numCheckpoint].longitude = place.geometry.location.lng();
+            $scope.path.checkpoints[numCheckpoint].latitude = place.geometry.location.lat();
         }
     });
