@@ -74,10 +74,13 @@ angular.module('starter.controllers', ['ngGeolocation'])
   })
 
   .controller('FollowPathCtrl', function($scope, path, PathService, MapService, $geolocation, $stateParams, $timeout) {
+
     $scope.path = path;
     var directionDisplay = null;
-    var nextCheckpoint = 0;
-    $scope.nextCheckpoint = path.checkpoints[nextCheckpoint];
+//    var nextCheckpoint = 0;
+    $scope.showMap = true;
+    $scope.nextCheckpointNumber = 0;
+    $scope.nextCheckpoint = path.checkpoints[$scope.nextCheckpointNumber];
 
     var computeDistance = function(origin, destination) {
 
@@ -98,15 +101,15 @@ angular.module('starter.controllers', ['ngGeolocation'])
     };
 
     var init = function() {
-      var geoMarker = new GeolocationMarker();
-      geoMarker.setCircleOptions({fillColor: '#808080'});
+      $scope.geoMarker = new GeolocationMarker();
+      $scope.geoMarker.setCircleOptions({fillColor: '#808080'});
 
       var centerPos = { lat: 12.7699298, lng: -122.4469157};
       directionDisplay = MapService.initMap('map', centerPos);
 
 
-      google.maps.event.addListenerOnce(geoMarker, 'position_changed', function () {
-        var position = geoMarker.getPosition();
+      google.maps.event.addListenerOnce($scope.geoMarker, 'position_changed', function () {
+        var position = $scope.geoMarker.getPosition();
         console.dir(position);
         map.setCenter(position);
         map.fitBounds(this.getBounds());
@@ -122,33 +125,43 @@ angular.module('starter.controllers', ['ngGeolocation'])
         }
         else {
           console.log("you're arrived!");
-          nextCheckpoint++;
-          $scope.nextCheckpoint = path.checkpoints[nextCheckpoint];
-          MapService.traceRoute(directionDisplay, pos, PathService.getCheckpointCoordinates(nextCheckpoint));
+          $scope.showMap=false;
+          $scope.nextCheckpointNumber++;
+          $scope.nextCheckpoint = path.checkpoints[$scope.nextCheckpointNumber];
+          MapService.traceRoute(directionDisplay, pos, PathService.getCheckpointCoordinates($scope.nextCheckpointNumber));
         }
 
-        google.maps.event.addListener(geoMarker, 'position_changed', function () {
-          var position = geoMarker.getPosition();
+        google.maps.event.addListener($scope.geoMarker, 'position_changed', function () {
+          var position = $scope.geoMarker.getPosition();
           map.setCenter(position);
           map.fitBounds(this.getBounds());
 
           var pos = {'latitude': position.lat(), 'longitude': position.lng()};
-          if (computeDistance(pos, path.checkpoints[nextCheckpoint]) < 0.3) {
+          if (computeDistance(pos, path.checkpoints[$scope.nextCheckpointNumber]) < 0.3) {
             console.log("you're arrived!");
-            nextCheckpoint++;
-            $scope.nextCheckpoint = path.checkpoints[nextCheckpoint];
-            MapService.traceRoute(directionDisplay, pos, PathService.getCheckpointCoordinates(nextCheckpoint));
+            $scope.showMap=false;
+            $scope.nextCheckpointNumber++;
+            $scope.nextCheckpoint = path.checkpoints[$scope.nextCheckpointNumber];
+            MapService.traceRoute(directionDisplay, pos, PathService.getCheckpointCoordinates($scope.nextCheckpointNumber));
           }
         });
 
       });
-      geoMarker.setMap(map);
+      $scope.geoMarker.setMap(map);
 
 //      console.log('position geomarker');
 //      console.dir(geoMarker.getPosition());
     };
 
     init();
+
+    $scope.goToNextCheckpoint = function() {
+      $scope.nextCheckpointNumber++;
+      $scope.nextCheckpoint = path.checkpoints[$scope.nextCheckpointNumber];
+      var position = $scope.geoMarker.getPosition();
+      var pos = {'latitude': position.lat(), 'longitude': position.lng()};
+      MapService.traceRoute(directionDisplay, pos, PathService.getCheckpointCoordinates($scope.nextCheckpointNumber));
+    };
 
 
 
