@@ -23,7 +23,9 @@
                 </div>
                 <div class="item">
                     <button class="button button-light icon-left ion-location" ng-click="showMap=false;">I'm arrived!</button>
-                    <button class="button button-light icon-left ion-map" ng-click="goToNextCheckpoint();">Go to next checkpoint</button>
+                    <!--<div ng-show="nextCheckpointNumber<(path.checkpoints.length-1)">-->
+                        <button ng-show="nextCheckpointNumber<(path.checkpoints.length-1)" class="button button-light icon-left ion-map" ng-click="goToNextCheckpoint();">Go to next checkpoint</button>
+                    <!--</div>-->
                 </div>
             </div>
 
@@ -41,7 +43,9 @@
                 </div>
                 <div class="item">
                     <button class="button button-light icon-left ion-chevron-left" ng-click="showMap=true;">Go back to itinerary</button>
-                    <button class="button button-light icon-left ion-map" ng-click="goToNextCheckpoint();showMap=true;">Go to next checkpoint</button>
+                    <div ng-show="nextCheckpointNumber<(path.checkpoints.length-1)">
+                        <button class="button button-light icon-left ion-map" ng-click="goToNextCheckpoint();showMap=true;">Go to next checkpoint</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -54,13 +58,13 @@
 </ion-view>
 <script id="my-modal.html" type="text/ng-template">
     <div class=".modal">
-    <ion-modal-view>
-        <ion-header-bar>
-        <h1 class="title">My Modal title</h1>
-    </ion-header-bar>
-        <ion-content>
-            Hello!
-        </ion-content>
-    </ion-modal-view>
+        <ion-modal-view>
+            <ion-header-bar>
+                <h1 class="title">My Modal title</h1>
+            </ion-header-bar>
+            <ion-content>
+                Hello!
+            </ion-content>
+        </ion-modal-view>
     </div>
 </script>
