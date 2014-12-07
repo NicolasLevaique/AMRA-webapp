@@ -1,13 +1,43 @@
 <ion-view title="Path">
     <ion-content class="has-header">
-        <div class="card">
-            <img src="../img/city_tour.jpg" width="100" height="100"/>
-            coucou
-            <h1> {{path.title}} </h1>
-            <p> {{path.description}} </p>
-            <a href="#/app/paths/follow/{{path.id}}"><button>Start this path!</button></a>
+        <!--TODO: adapt to computer screen!-->
+
+        <div class="list card">
+
+            <div class="item item-avatar">
+                <img src="../img/city_tour.jpg">
+                <h2>{{path.title}}</h2>
+            </div>
+
+            <div class="item item-body">
+                <p>
+                    {{path.description}}
+                </p>
+
+            </div>
+
+            <div ng-repeat="checkpoint in path.checkpoints | limitTo:checkpointsDisplayLimit">
+                <div class="item item-thumbnail-left" href="#">
+                    <img src="../img/city_tour.jpg">
+                    <h2>{{checkpoint.name}}</h2>
+                    <p>{{checkpoint.introduction}}</p>
+                </div>
+            </div>
+
+            <div ng-show="path.checkpoints.length>checkpointsDisplayLimit">
+                <div class="item item-icon-left">
+                    <i class="icon ion-more"></i>
+                    And {{path.checkpoints.length - checkpointsDisplayLimit}} more checkpoints to discover!
+                </div>
+            </div>
+
+            <div >
+                <a class="item item-icon-left" href="#/app/paths/follow/{{path.id}}">
+                    <i class="icon ion-arrow-graph-up-right"></i>
+                    Start this path
+                </a>
+            </div>
+
         </div>
-
-
     </ion-content>
 </ion-view>
