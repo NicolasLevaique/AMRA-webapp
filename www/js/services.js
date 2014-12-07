@@ -29,6 +29,7 @@ angular.module('starter.services', [])
         return deferred.promise;
       },
       getCheckpointCoordinates: function (checkpoint) {
+        console.dir(currentPath.checkpoints[checkpoint]);
         return {"latitude":currentPath.checkpoints[checkpoint].latitude, "longitude": currentPath.checkpoints[checkpoint].longitude}
       }
     }
@@ -80,6 +81,10 @@ angular.module('starter.services', [])
         directionsService.route(request, function(response, status) {
           if (status == google.maps.DirectionsStatus.OK) {
             directionsDisplay.setDirections(response);
+          }
+          else {
+            console.dir(request);
+            console.log("error with google map : " + status);
           }
         });
       },
