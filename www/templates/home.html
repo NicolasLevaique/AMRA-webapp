@@ -3,44 +3,31 @@
     <ion-nav-buttons side="left">
         <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
     </ion-nav-buttons>
-    <!--  <ion-content class="has-header">
-      <ion-list>
-        <ion-item ng-repeat="playlist in playlists" href="#/app/playlists/{{playlist.id}}">
-          {{playlist.title}}
-        </ion-item>
-      </ion-list>
-    </ion-content>
-  -->
 
     <ion-content class="has-header"  scrollbar-x="true" padding="true">
+        <div class="card">
+            <div class="item">
+                <div class="item-avatar">
+                    <img src="../img/ionic.png">
+                    <h1 class="title"><em>Assist my ramble</em> Application</h1>
+                    <p>This application allow you to visit some selected paths of the city you want to visit </p>
+                </div>
+            </div>
+        </div>
 
-
-        <div class="item item-avatar">
-            <img src="../img/ionic.png">
-            <h1 class="title">Map Localisation Mobile Application</h1>
-            <p>This application allow you to visit some selected paths of the city you want to visit </p>
-
-            <a class="item item-icon-left assertive" href="#">
-                <i class="icon"></i>
+        <div class="list card">
+            <div class="item">
                 Getting Started !
                 <p> Here are some selected paths to begin with</p>
-            </a>
-
-        </div>
-
-
-        <div class="list-card">
-
-            <ion-item ng-repeat="path in suggestedPaths">
-                <a href="#/app/paths/description/{{path.id}}">
+            </div>
+            <div  ng-repeat="path in suggestedPaths">
+                <a class="item item-thumbnail-left" href="#/app/paths/description/{{path.id}}">
                     <img src="../img/city_tour.jpg" width="50" height="50"/>
                     <h4> {{path.title}} </h4>
-                    <p> {{path.description}} et {{path.id}}</p>
+                    <p> {{path.description}}</p>
                 </a>
-            </ion-item>
-
+            </div>
         </div>
-
     </ion-content>
 
 </ion-view>
