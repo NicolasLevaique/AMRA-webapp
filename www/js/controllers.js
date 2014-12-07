@@ -70,6 +70,7 @@ angular.module('starter.controllers', ['ngGeolocation'])
 
   .controller('PathCtrl', function($scope, path) {
     $scope.path = path;
+    $scope.checkpointsDisplayLimit = 5;
   })
 
   .controller('FollowPathCtrl', function($scope, path, PathService, MapService, $geolocation, $stateParams, $timeout) {
