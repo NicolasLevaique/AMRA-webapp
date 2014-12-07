@@ -77,6 +77,7 @@ angular.module('starter.controllers', ['ngGeolocation'])
     $scope.path = path;
     var directionDisplay = null;
     var nextCheckpoint = 0;
+    $scope.nextCheckpoint = path.checkpoints[nextCheckpoint];
 
     var computeDistance = function(origin, destination) {
 
@@ -122,6 +123,7 @@ angular.module('starter.controllers', ['ngGeolocation'])
         else {
           console.log("you're arrived!");
           nextCheckpoint++;
+          $scope.nextCheckpoint = path.checkpoints[nextCheckpoint];
           MapService.traceRoute(directionDisplay, pos, PathService.getCheckpointCoordinates(nextCheckpoint));
         }
 
@@ -134,6 +136,7 @@ angular.module('starter.controllers', ['ngGeolocation'])
           if (computeDistance(pos, path.checkpoints[nextCheckpoint]) < 0.3) {
             console.log("you're arrived!");
             nextCheckpoint++;
+            $scope.nextCheckpoint = path.checkpoints[nextCheckpoint];
             MapService.traceRoute(directionDisplay, pos, PathService.getCheckpointCoordinates(nextCheckpoint));
           }
         });
