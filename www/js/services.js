@@ -9,7 +9,7 @@ angular.module('starter.services', [])
       //if dev
       backend: 'http://localhost:8200/api/'
       // if prod
-//      backend: 'http://3ma7.learning-socle.org/'
+      //backend: 'http://3ma7.learning-socle.org/'
     }
   }])
 
@@ -66,6 +66,52 @@ angular.module('starter.services', [])
       }
     }
   }])
+
+.service('UserService', ['$http', '$q', 'Environment', function($http, $q, Environment) {
+        var User = {
+            isLogged: false,
+            username: ''
+        };
+        return {
+            User : User
+        }
+    }])
+
+.service('FBService', ['$http', '$q', 'Facebook' ,  function($http, $q, Facebook) {
+    return {
+
+        watchLoginChange : function () {
+            FB.Event.subscribe('auth.authResponseChange', function(response) {
+
+                if (response.status === 'connected') {
+
+                    /*
+                     The user is already logged,
+                     is possible retrieve his personal info
+                     */
+                    _self.getUserInfo();
+
+                    /*
+                     This is also the point where you should create a
+                     session for the current user.
+                     For this purpose you can use the data inside the
+                     response.authResponse object.
+                     */
+
+                }
+                else {
+
+                    /*
+                     The user is not logged to the app, or into Facebook:
+                     destroy the session on the server.
+                     */
+
+                };
+                console.log("lala");
+            })
+        }
+    }
+}])
 
   .service('MapService', ['$http', '$q', function() {
     return {
