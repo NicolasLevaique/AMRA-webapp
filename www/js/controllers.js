@@ -1,46 +1,46 @@
 angular.module('starter.controllers', ['ngGeolocation'])
 
-  .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
-    // Form data for the login modal
-    $scope.loginData = {};
+    .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+        // Form data for the login modal
+        $scope.loginData = {};
 
-    // Create the login modal that we will use later
-    $ionicModal.fromTemplateUrl('templates/login.html', {
-      scope: $scope
-    }).then(function(modal) {
-      $scope.modal = modal;
-    });
+        // Create the login modal that we will use later
+        $ionicModal.fromTemplateUrl('templates/login.html', {
+            scope: $scope
+        }).then(function(modal) {
+            $scope.modal = modal;
+        });
 
-    // Triggered in the login modal to close it
-    $scope.closeLogin = function() {
-      $scope.modal.hide();
-    };
+        // Triggered in the login modal to close it
+        $scope.closeLogin = function() {
+            $scope.modal.hide();
+        };
 
-    // Open the login modal
-    $scope.login = function() {
-      $scope.modal.show();
-    };
+        // Open the login modal
+        $scope.login = function() {
+            $scope.modal.show();
+        };
 
-    // Perform the login action when the user submits the login form
-    $scope.doLogin = function() {
-      console.log('Doing login', $scope.loginData);
+        // Perform the login action when the user submits the login form
+        $scope.doLogin = function() {
+            console.log('Doing login', $scope.loginData);
 
-      // Simulate a login delay. Remove this and replace with your login
-      // code if using a login system
-      $timeout(function() {
-        $scope.closeLogin();
-      }, 1000);
-    };
-  })
+            // Simulate a login delay. Remove this and replace with your login
+            // code if using a login system
+            $timeout(function() {
+                $scope.closeLogin();
+            }, 1000);
+        };
+    })
 
-  .controller('MenuCtrl', function($scope, $ionicNavBarDelegate) {
-    $scope.onClickBackButton = function() {
-      console.log('click on back button');
-      $scope.$digest();
-    };
-  })
+    .controller('MenuCtrl', function($scope, $ionicNavBarDelegate) {
+        $scope.onClickBackButton = function() {
+            console.log('click on back button');
+            $scope.$digest();
+        };
+    })
 
-  .controller('HomeCtrl', function ($scope, $stateParams, $geolocation, suggestedPaths, position, PathsService/*, PlaylistService*/) {
+    .controller('HomeCtrl', function ($scope, $stateParams, $geolocation, suggestedPaths, position, PathsService/*, PlaylistService*/) {
 //    var suggestPaths = function () {
 //      var position = $geolocation.getCurrentPosition({
 //        timeout: 60000
@@ -54,114 +54,114 @@ angular.module('starter.controllers', ['ngGeolocation'])
 //    };
 //
 //    suggestPaths();
-    $scope.suggestedPaths = suggestedPaths;
-    $scope.playlists = suggestedPaths;
-  })
+        $scope.suggestedPaths = suggestedPaths;
+        $scope.playlists = suggestedPaths;
+    })
 
-  // .controller('PlaylistCtrl', function ($scope, $stateParams, PlaylistService) {
-  // PlaylistService.findById($stateParams.playlistId).then(function(playlist) {
-  // $scope.checkpoints = [
-  // { title : 'checkpoint 1', pic : 'path1.jpg' , id: 1},
-  //{ title : 'checkpoint 2', pic : 'path2.jpg' , id: 2}
-  //]
-  //$scope.playlist = playlist;
-  //});
-  //})
+    // .controller('PlaylistCtrl', function ($scope, $stateParams, PlaylistService) {
+    // PlaylistService.findById($stateParams.playlistId).then(function(playlist) {
+    // $scope.checkpoints = [
+    // { title : 'checkpoint 1', pic : 'path1.jpg' , id: 1},
+    //{ title : 'checkpoint 2', pic : 'path2.jpg' , id: 2}
+    //]
+    //$scope.playlist = playlist;
+    //});
+    //})
 
-  .controller('PathCtrl', function($scope, path) {
-    $scope.path = path;
-    $scope.checkpointsDisplayLimit = 5;
-  })
+    .controller('PathCtrl', function($scope, path) {
+        $scope.path = path;
+        $scope.checkpointsDisplayLimit = 5;
+    })
 
-  .controller('FollowPathCtrl', function($scope, path, PathService, MapService, $geolocation, $stateParams, $timeout) {
+    .controller('FollowPathCtrl', function($scope, path, PathService, MapService, $geolocation, $stateParams, $timeout) {
 
-    $scope.path = path;
-    var directionDisplay = null;
+        $scope.path = path;
+        var directionDisplay = null;
 //    var nextCheckpoint = 0;
-    $scope.showMap = true;
-    $scope.nextCheckpointNumber = 0;
-    $scope.nextCheckpoint = path.checkpoints[$scope.nextCheckpointNumber];
+        $scope.showMap = true;
+        $scope.nextCheckpointNumber = 0;
+        $scope.nextCheckpoint = path.checkpoints[$scope.nextCheckpointNumber];
 
-    var computeDistance = function(origin, destination) {
+        var computeDistance = function(origin, destination) {
 
-      /** Converts numeric degrees to radians */
-      if (typeof(Number.prototype.toRad) === "undefined") {
-        Number.prototype.toRad = function () {
-          return this * Math.PI / 180;
-        }
-      }
+            /** Converts numeric degrees to radians */
+            if (typeof(Number.prototype.toRad) === "undefined") {
+                Number.prototype.toRad = function () {
+                    return this * Math.PI / 180;
+                }
+            }
 
-      // check http://www.movable-type.co.uk/scripts/latlong.html for more info
-      var φ1 = origin.latitude.toRad();
-      var φ2 = destination.latitude.toRad();
-      var Δλ = (destination.longitude - origin.longitude).toRad();
-      var R = 6371; // earth's radius, gives d in km
-      var d = Math.acos(Math.sin(φ1) * Math.sin(φ2) + Math.cos(φ1) * Math.cos(φ2) * Math.cos(Δλ)) * R;
-      return d;
-    };
+            // check http://www.movable-type.co.uk/scripts/latlong.html for more info
+            var φ1 = origin.latitude.toRad();
+            var φ2 = destination.latitude.toRad();
+            var Δλ = (destination.longitude - origin.longitude).toRad();
+            var R = 6371; // earth's radius, gives d in km
+            var d = Math.acos(Math.sin(φ1) * Math.sin(φ2) + Math.cos(φ1) * Math.cos(φ2) * Math.cos(Δλ)) * R;
+            return d;
+        };
 
-    var init = function() {
-      $scope.geoMarker = new GeolocationMarker();
-      $scope.geoMarker.setCircleOptions({fillColor: '#808080'});
+        var init = function() {
+            $scope.geoMarker = new GeolocationMarker();
+            $scope.geoMarker.setCircleOptions({fillColor: '#808080'});
 
-      var centerPos = { lat: 12.7699298, lng: -122.4469157};
-      directionDisplay = MapService.initMap('map', centerPos);
+            var centerPos = { lat: 12.7699298, lng: -122.4469157};
+            directionDisplay = MapService.initMap('map', centerPos);
 
 
-      google.maps.event.addListenerOnce($scope.geoMarker, 'position_changed', function () {
-        var position = $scope.geoMarker.getPosition();
-        console.dir(position);
-        map.setCenter(position);
-        map.fitBounds(this.getBounds());
+            google.maps.event.addListenerOnce($scope.geoMarker, 'position_changed', function () {
+                var position = $scope.geoMarker.getPosition();
+                console.dir(position);
+                map.setCenter(position);
+                map.fitBounds(this.getBounds());
 
-        var destination = PathService.getCheckpointCoordinates(0);
-        var origin = {'latitude': position.lat(), 'longitude': position.lng()};
+                var destination = PathService.getCheckpointCoordinates(0);
+                var origin = {'latitude': position.lat(), 'longitude': position.lng()};
 //        MapService.traceRoute(directionDisplay, origin, destination);
 
-        var pos = {'latitude': position.lat(), 'longitude': position.lng()};
+                var pos = {'latitude': position.lat(), 'longitude': position.lng()};
 
-        if (computeDistance(pos, path.checkpoints[0]) > 0.3) {
-          MapService.traceRoute(directionDisplay, origin, destination);
-        }
-        else {
-          console.log("you're arrived!");
-          $scope.showMap=false;
-          $scope.nextCheckpointNumber++;
-          $scope.nextCheckpoint = path.checkpoints[$scope.nextCheckpointNumber];
-          MapService.traceRoute(directionDisplay, pos, PathService.getCheckpointCoordinates($scope.nextCheckpointNumber));
-        }
+                if (computeDistance(pos, path.checkpoints[0]) > 0.3) {
+                    MapService.traceRoute(directionDisplay, origin, destination);
+                }
+                else {
+                    console.log("you're arrived!");
+                    $scope.showMap=false;
+                    $scope.nextCheckpointNumber++;
+                    $scope.nextCheckpoint = path.checkpoints[$scope.nextCheckpointNumber];
+                    MapService.traceRoute(directionDisplay, pos, PathService.getCheckpointCoordinates($scope.nextCheckpointNumber));
+                }
 
-        google.maps.event.addListener($scope.geoMarker, 'position_changed', function () {
-          var position = $scope.geoMarker.getPosition();
-          map.setCenter(position);
-          map.fitBounds(this.getBounds());
+                google.maps.event.addListener($scope.geoMarker, 'position_changed', function () {
+                    var position = $scope.geoMarker.getPosition();
+                    map.setCenter(position);
+                    map.fitBounds(this.getBounds());
 
-          var pos = {'latitude': position.lat(), 'longitude': position.lng()};
-          if (computeDistance(pos, path.checkpoints[$scope.nextCheckpointNumber]) < 0.3) {
-            console.log("you're arrived!");
-            $scope.showMap=false;
-            $scope.nextCheckpointNumber++;
-            $scope.nextCheckpoint = path.checkpoints[$scope.nextCheckpointNumber];
-            MapService.traceRoute(directionDisplay, pos, PathService.getCheckpointCoordinates($scope.nextCheckpointNumber));
-          }
-        });
+                    var pos = {'latitude': position.lat(), 'longitude': position.lng()};
+                    if (computeDistance(pos, path.checkpoints[$scope.nextCheckpointNumber]) < 0.3) {
+                        console.log("you're arrived!");
+                        $scope.showMap=false;
+                        $scope.nextCheckpointNumber++;
+                        $scope.nextCheckpoint = path.checkpoints[$scope.nextCheckpointNumber];
+                        MapService.traceRoute(directionDisplay, pos, PathService.getCheckpointCoordinates($scope.nextCheckpointNumber));
+                    }
+                });
 
-      });
-      $scope.geoMarker.setMap(map);
+            });
+            $scope.geoMarker.setMap(map);
 
 //      console.log('position geomarker');
 //      console.dir(geoMarker.getPosition());
-    };
+        };
 
-    init();
+        init();
 
-    $scope.goToNextCheckpoint = function() {
-      $scope.nextCheckpointNumber++;
-      $scope.nextCheckpoint = path.checkpoints[$scope.nextCheckpointNumber];
-      var position = $scope.geoMarker.getPosition();
-      var pos = {'latitude': position.lat(), 'longitude': position.lng()};
-      MapService.traceRoute(directionDisplay, pos, PathService.getCheckpointCoordinates($scope.nextCheckpointNumber));
-    };
+        $scope.goToNextCheckpoint = function() {
+            $scope.nextCheckpointNumber++;
+            $scope.nextCheckpoint = path.checkpoints[$scope.nextCheckpointNumber];
+            var position = $scope.geoMarker.getPosition();
+            var pos = {'latitude': position.lat(), 'longitude': position.lng()};
+            MapService.traceRoute(directionDisplay, pos, PathService.getCheckpointCoordinates($scope.nextCheckpointNumber));
+        };
 
 
 
@@ -341,59 +341,151 @@ angular.module('starter.controllers', ['ngGeolocation'])
 //      });
 //    }
 //    init();
-  })
+    })
 
 
 
-  .controller('MapCtrl', function($scope, MapService) {
-    var centerPos = { lat: 37.7699298,  lng: -122.4469157};
-    var directionDisplay = MapService.initMap('map', centerPos);
+    .controller('MapCtrl', function($scope, MapService) {
+        var centerPos = { lat: 37.7699298,  lng: -122.4469157};
+        var directionDisplay = MapService.initMap('map', centerPos);
 
-    $scope.calcRoute = function() {
-      var origin = {"latitude":37.7699298, "longitude": -122.4469157};
-      var destination = {"latitude": 37.7683909618184, "longitude": -122.51089453697205};
-      MapService.traceRoute(directionDisplay, origin, destination);
-    }
-  })
+        $scope.calcRoute = function() {
+            var origin = {"latitude":37.7699298, "longitude": -122.4469157};
+            var destination = {"latitude": 37.7683909618184, "longitude": -122.51089453697205};
+            MapService.traceRoute(directionDisplay, origin, destination);
+        }
+    })
 
-  .controller('AdminCtrl', function($scope, $log, $animate, PostService) {
-    $scope.path = {
-      'checkpoints' : []
-    };
-    $scope.searchBoxes = []; //list of the maps search Boxes autocomplete
+    .controller('AdminCtrl', function(FBService, $scope, $ionicPopup, $state, $log, $ionicLoading, $animate, PostService, UserService) {
+        $scope.user = UserService.user;
+        // This is called with the results from from FB.getLoginStatus().
+        function statusChangeCallback(response) {
+            console.log(response);
+            if (response.status === 'connected') {
+                // Logged into your app and Facebook.
+                FBService.getUserInfos().then(function() {
+                    console.log("info retrieved")
+                    $scope.user = UserService.User;
+                    $scope.hide();
 
-    $scope.addCheckpoint = function() {
-      var checkpoint ={
-        name : ''
-      };
-      $scope.path.checkpoints.push(checkpoint);
-      $scope.searchBoxes.push();
-    }
+                });
+            } else if (response.status === 'not_authorized') {
+                // The person is logged into Facebook, but not your app.
+                console.log("status = not_authorized");
+                showPopup();
+            } else {
+                showPopup();
+            }
+        }
 
-    //will be executed when the ng repeat have finished being created
-    $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
-      var numCheckpoints = $scope.path.checkpoints.length - 1;
-      $scope.searchBoxes[numCheckpoints] = new google.maps.places.Autocomplete(
-        /** @type {HTMLInputElement} */(document.getElementById('autocomplete'+(numCheckpoints)))
-      );
-      //Listener calling a function when the user select one adress
-      google.maps.event.addListener($scope.searchBoxes[numCheckpoints], 'place_changed', function() {
-        retrieveLocation(numCheckpoints);
-      });
+        FBService.getLoginStatus(statusChangeCallback);
+
+        $scope.path = {
+            'checkpoints' : []
+        };
+        $scope.searchBoxes = []; //list of the maps search Boxes autocomplete
+
+        $scope.addCheckpoint = function() {
+            var checkpoint ={
+                name : ''
+            };
+            $scope.path.checkpoints.push(checkpoint);
+            $scope.searchBoxes.push();
+        }
+
+        //Test UserService
+        console.log(UserService.User.isLogged);
+        console.log(UserService.User.username);
+        UserService.User.username="lala";
+        console.log(UserService.User.username);
+
+        //will be executed when the ng repeat have finished being created
+        $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
+            var numCheckpoints = $scope.path.checkpoints.length - 1;
+            $scope.searchBoxes[numCheckpoints] = new google.maps.places.Autocomplete(
+                /** @type {HTMLInputElement} */(document.getElementById('autocomplete'+(numCheckpoints)))
+            );
+            //Listener calling a function when the user select one adress
+            google.maps.event.addListener($scope.searchBoxes[numCheckpoints], 'place_changed', function() {
+                retrieveLocation(numCheckpoints);
+            });
+        });
+
+        //Post the path to the backend
+        $scope.publishPath = function () {
+            var pathJSON = angular.toJson($scope.path);
+            PostService.postPath(pathJSON).then(function (status) {
+                $log.debug("Path posted successfully");
+                //TODO : create a new page and redirect to it
+            });
+        }
+
+        retrieveLocation = function(numCheckpoint){
+            var place = $scope.searchBoxes[numCheckpoint].getPlace();
+            $scope.path.checkpoints[numCheckpoint].longitude = place.geometry.location.lng();
+            $scope.path.checkpoints[numCheckpoint].latitude = place.geometry.location.lat();
+        }
+
+        showPopup = function() { //TODO add parameter explaining why this is showed
+            $scope.hide();
+            // An elaborate, custom popup
+            var myPopup = $ionicPopup.show({
+                template: '<div class="fb-login-button" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="true"></div>', //TODO : integrate the facebook button
+                title: 'Connection',
+                subTitle: 'To access this section you need to be connected. Please connect to Facebook',
+                scope: $scope,
+                buttons : [
+                    {
+                        text: 'Connect to Facebook',
+                        type: 'button-positive',
+                        onTap: function (e) {
+                            $scope.connectionToFacebook();
+                            $scope.show();
+                            // Returning a value will cause the promise to resolve with the given value.
+                        }
+                    },
+                    {
+                        text : "Return",
+                        onTap : function(e){
+                            $state.go('app.home');
+                        }
+                    }
+                ]
+            });
+            myPopup.then(function(res) {
+                console.log('Tapped!', res);
+            });
+        };
+        $scope.connectionToFacebook = function() {
+            FBService.login(afterLogin);
+        }
+        afterLogin = function (response) {
+            console.log("after login" + response.status);
+            if (response.status === 'connected') {
+                // Logged into your app and Facebook.
+                FBService.getUserInfos().then(function() {
+                    console.log("info retrieved");
+                    $scope.user = UserService.User;
+                    $scope.hide();
+
+                });
+
+            } else if (response.status === 'not_authorized') {
+                // The person is logged into Facebook, but not your app.
+                console.log("status = not_authorized");
+                showPopup();
+            } else {
+                showPopup();
+            }
+        }
+        $scope.show = function() {
+            $ionicLoading.show({
+                template: 'Loading...'
+            });
+        };
+        $scope.hide = function(){
+            $ionicLoading.hide();
+        };
+        $scope.show();
+
     });
-
-    //Post the path to the backend
-    $scope.publishPath = function () {
-      var pathJSON = angular.toJson($scope.path);
-      PostService.postPath(pathJSON).then(function (status) {
-        $log.debug("Path posted successfully");
-        //TODO : create a new page and redirect to it
-      });
-    }
-
-    retrieveLocation = function(numCheckpoint){
-      var place = $scope.searchBoxes[numCheckpoint].getPlace();
-      $scope.path.checkpoints[numCheckpoint].longitude = place.geometry.location.lng();
-      $scope.path.checkpoints[numCheckpoint].latitude = place.geometry.location.lat();
-    }
-  });

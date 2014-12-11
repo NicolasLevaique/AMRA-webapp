@@ -51,25 +51,25 @@ angular.module('starter.services', [])
     }
   }])
 
-  .service('PathsService', ['$http', '$q', 'Environment', function($http, $q, Environment) {
-    return {
-      getSuggestedPaths: function (position, distance) {
-        var deferred = $q.defer();
-        console.dir(position);
-        $http.get(Environment.backend + 'paths/?lat=' + position.coords.latitude +
-          '&long=' + position.coords.longitude + '&dist=' + distance).success(function (paths) {
-          deferred.resolve(paths);
-        }).error(function (err, status) {
-          deferred.reject(status);
-        });
-        return deferred.promise;
-      }
-    }
-  }])
+    .service('PathsService', ['$http', '$q', 'Environment', function($http, $q, Environment) {
+        return {
+            getSuggestedPaths: function (position, distance) {
+                var deferred = $q.defer();
+                console.dir(position);
+                $http.get(Environment.backend + 'paths/?lat=' + position.coords.latitude +
+                    '&long=' + position.coords.longitude + '&dist=' + distance).success(function (paths) {
+                    deferred.resolve(paths);
+                }).error(function (err, status) {
+                    deferred.reject(status);
+                });
+                return deferred.promise;
+            }
+        }
+    }])
 
 .service('UserService', ['$http', '$q', 'Environment', function($http, $q, Environment) {
         var User = {
-            isLogged: false,
+            isConnected: false,
             username: ''
         };
         return {
@@ -77,11 +77,42 @@ angular.module('starter.services', [])
         }
     }])
 
-.service('FBService', ['$http', '$q', 'Facebook' ,  function($http, $q, Facebook) {
+
+
+
+.service('FBService', ['$http', '$q', 'UserService', function($http, $q, UserService) {
     return {
 
+        getLoginStatus : function(callbackFunction) {
+            console.log("calling FB.getLoginStatus");
+            FB.getLoginStatus(callbackFunction);
+            console.log("After calling FB.getLoginStatus");
+
+        },
+        getUserInfos : function() {
+            var deferred = $q.defer();
+            FB.api('/me', function (response) {
+                console.log(JSON.stringify(response));
+                /*
+                 {"id":"10205998707993947","first_name":"Thomas","gender":"male","last_name":"Vuillemin",
+                 "link":"https://www.facebook.com/app_scoped_user_id/10205998707993947/",
+                 "locale":"en_US","name":"Thomas Vuillemin","timezone":1,"updated_time":"2014-06-11T11:34:11+0000","verified":true}
+                 */
+                UserService.User.isLogged = true;
+                UserService.User.name = response.name;
+                UserService.User.id = response.id;
+                UserService.User.isConnected = true;
+
+                deferred.resolve();
+            });
+            return deferred.promise;
+
+        },
+        login : function(callbackFunction) {
+            FB.login(callbackFunction);
+        },
         watchLoginChange : function () {
-            FB.Event.subscribe('auth.authResponseChange', function(response) {
+            facebook.FB.Event.subscribe('auth.authResponseChange', function(response) {
 
                 if (response.status === 'connected') {
 
@@ -112,6 +143,7 @@ angular.module('starter.services', [])
         }
     }
 }])
+
 
   .service('MapService', ['$http', '$q', function() {
     return {

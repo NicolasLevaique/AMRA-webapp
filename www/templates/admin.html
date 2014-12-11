@@ -13,9 +13,24 @@
     </ion-content>
   -->
 
-    <ion-content class="has-header"  scrollbar-x="true" padding="true">
-        <h1 class="title">Create a path</h1>
 
+    <ion-content class="has-header"  scrollbar-x="true" padding="true">
+        <div ng-show="user.isConnected" class="card">
+            <div class="item item-text-wrap">
+                Welcome, {{user.name}}
+            </div>
+        </div>
+
+
+
+        <h1 class="title">Create a path</h1>
+        <div class="fb-login-button" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false"></div>
+        <div
+                class="fb-like"
+                data-share="true"
+                data-width="450"
+                data-show-faces="true">
+        </div>
 
         <form name="form" novalidate class="simple-form">
             Name:
