@@ -39,11 +39,9 @@
                 </form>
                     </div>
                     <div class="item">
-                    <button class="button button-light icon-left ion-paper-airplane "
-                            ng-click="publishPath()"
-                            ng-disabled="form.$invalid ">Publish your path now</button>
                     <button class="button icon-left ion-plus-round button-light"
-                            ng-click="addCheckpoint()">Add a New Checkpoint</button>
+                            ng-disabled="form.$invalid"
+                            ng-click="addCheckpoint()">Add your first Checkpoint</button>
                 </div>
             </div>
 
@@ -64,7 +62,7 @@
                     <label class="item item-input ">
                         <i class="icon ion-search placeholder-icon"></i>
                         <input type="text" id={{"autocomplete"+$index}}
-                               ng-model="checkpoint.description" placeholder="Search for the position" required/>
+                               ng-model="checkpoint.position" placeholder="Search for the position" required/>
 
                     </label>
                 </form>
@@ -77,7 +75,6 @@
                         ng-click="addCheckpoint()">Add a New Checkpoint</button>
             </div>
         </div>
-        <br/><br/><br/> <!--  hack to leave room for google map search results -->
-        </div>
+        <br/><br/><br/>
     </ion-content>
 </ion-view>

@@ -366,15 +366,15 @@ angular.module('starter.controllers', ['ngGeolocation'])
                 FBService.getUserInfos().then(function() {
                     console.log("info retrieved")
                     $scope.user = UserService.User;
-                    $scope.hide();
+                    $scope.hideLoading();
 
                 });
             } else if (response.status === 'not_authorized') {
                 // The person is logged into Facebook, but not your app.
                 console.log("status = not_authorized");
-                showPopup();
+                showLoginPopup();
             } else {
-                showPopup();
+                showLoginPopup();
             }
         }
 
@@ -413,10 +413,14 @@ angular.module('starter.controllers', ['ngGeolocation'])
 
         //Post the path to the backend
         $scope.publishPath = function () {
+            $scope.path.creatorID = UserService.User.id;
             var pathJSON = angular.toJson($scope.path);
+            console.log(pathJSON);
+            $scope.showLoading();
             PostService.postPath(pathJSON).then(function (status) {
                 $log.debug("Path posted successfully");
-                //TODO : create a new page and redirect to it
+                showSuccessPopup();
+                //TODO : Get the ID of the path to allow the user to share the link
             });
         }
 
@@ -426,8 +430,34 @@ angular.module('starter.controllers', ['ngGeolocation'])
             $scope.path.checkpoints[numCheckpoint].latitude = place.geometry.location.lat();
         }
 
-        showPopup = function() { //TODO add parameter explaining why this is showed
-            $scope.hide();
+        //TODO Integrate the template in a new file
+        showSuccessPopup = function() {
+            $scope.hideLoading();
+            // An elaborate, custom popup
+            var successPopup = $ionicPopup.show({
+                title: 'Success',
+                template : "<div class='card'><div class='item item-text-wrap'>"+
+                            "Your path has been successfully published"+
+                            "</div>"+
+                            "</div>",
+                scope: $scope,
+                buttons : [
+                    {
+                        text: 'Create a new path',
+                        type: 'button-positive',
+                        onTap: function (e) {
+                            $scope.path = {
+                                'checkpoints' : []
+                            };
+                            $scope.searchBoxes = [];
+                        }
+                    }
+                ]
+            });
+        };
+
+        showLoginPopup = function() { //TODO add parameter explaining why this is showed
+            $scope.hideLoading();
             // An elaborate, custom popup
             var myPopup = $ionicPopup.show({
                 template: '<div class="fb-login-button" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="true"></div>', //TODO : integrate the facebook button
@@ -440,7 +470,7 @@ angular.module('starter.controllers', ['ngGeolocation'])
                         type: 'button-positive',
                         onTap: function (e) {
                             $scope.connectionToFacebook();
-                            $scope.show();
+                            $scope.showLoading();
                             // Returning a value will cause the promise to resolve with the given value.
                         }
                     },
@@ -466,26 +496,26 @@ angular.module('starter.controllers', ['ngGeolocation'])
                 FBService.getUserInfos().then(function() {
                     console.log("info retrieved");
                     $scope.user = UserService.User;
-                    $scope.hide();
+                    $scope.hideLoading();
 
                 });
 
             } else if (response.status === 'not_authorized') {
                 // The person is logged into Facebook, but not your app.
                 console.log("status = not_authorized");
-                showPopup();
+                showLoginPopup();
             } else {
-                showPopup();
+                showLoginPopup();
             }
         }
-        $scope.show = function() {
+        $scope.showLoading = function() {
             $ionicLoading.show({
                 template: 'Loading...'
             });
         };
-        $scope.hide = function(){
+        $scope.hideLoading = function(){
             $ionicLoading.hide();
         };
-        $scope.show();
+        $scope.showLoading();
 
     });
