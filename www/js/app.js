@@ -142,18 +142,18 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
           controller: 'HomeCtrl'
         }
       }
-      ,
-      resolve: {
-        position: function($geolocation) {
-          return $geolocation.getCurrentPosition();
-        },
-        suggestedPaths: function(position, PathsService) {
-          return PathsService.getSuggestedPaths(position, 2000000).then(function (result) {
-            console.dir(result);
-            return result.paths;
-          })
-        }
-      }
+//      ,
+//      resolve: {
+//        position: function($geolocation) {
+//          return $geolocation.getCurrentPosition();
+//        },
+//        suggestedPaths: function(position, PathsService) {
+//          return PathsService.getSuggestedPaths(position, 200000000000).then(function (result) {
+//            console.dir(result);
+//            return result.paths;
+//          })
+//        }
+//      }
     })
 
     .state('app.description', {
@@ -163,7 +163,8 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
           templateUrl: "templates/path.html",
           controller: 'PathCtrl'
         }
-      },
+      }
+      ,
       resolve: {
         path: function($stateParams, PathService) {
           return PathService.getPath($stateParams.pathId);
