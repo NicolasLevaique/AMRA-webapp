@@ -16,31 +16,39 @@
     <ion-content class="has-header"  scrollbar-x="true" padding="true">
         <h1 class="title">Create a path</h1>
 
-
         <form name="form" novalidate class="simple-form">
-            Name:
-            <input type="text" ng-model="path.name"  required /><br />
-            Description :
-            <input type="text" ng-model="path.description" required/><br />
-            Position :
-            <button ng-click="publishPath()"
-                    ng-disabled="form.$invalid ">SAVE PATH</button>
+            <div class="list">
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label" ng-model="path.name" required>Name</span>
+                    <input type="text" placeholder="Visit of Toulouse">
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label" ng-model="path.introduction" required>Brief description</span>
+                    <input type="text" placeholder="Nice visit of Toulouse, for a great afternoon!">
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label" ng-model="path.description" required>Detailed description</span>
+                    <input type="text" placeholder="The visit starts with...">
+                </label>
+                <button ng-click="publishPath()" ng-disabled="form.$invalid">Publish path</button>
+            </div>
+        </form>
+
+        <button ng-click="addCheckpoint()">Add Checkpoint</button>
+
+        <ion-item ng-repeat="checkpoint in path.checkpoints" on-finish-render>
+            <h4> New Checkpoint </h4>
+            <form name="form" novalidate class="simple-form">
+                Name:
+                <input type="text" ng-model="checkpoint.name"  required /><br />
+                Description :
+                <input type="text" ng-model="checkpoint.description" required/><br />
+                Position :
+                <input type="text" id={{"autocomplete"+$index}} required/><br />
             </form>
+
             <button ng-click="addCheckpoint()">Add Checkpoint</button>
-
-            <ion-item ng-repeat="checkpoint in path.checkpoints" on-finish-render>
-                <h4> New Checkpoint </h4>
-                <form name="form" novalidate class="simple-form">
-                    Name:
-                    <input type="text" ng-model="checkpoint.name"  required /><br />
-                    Description :
-                    <input type="text" ng-model="checkpoint.description" required/><br />
-                    Position :
-                    <input type="text" id={{"autocomplete"+$index}} required/><br />
-                </form>
-
-                <button ng-click="addCheckpoint()">Add Checkpoint</button>
-            </ion-item>
+        </ion-item>
         </div>
     </ion-content>
 </ion-view>
