@@ -81,14 +81,8 @@ angular.module('starter.controllers', ['ngGeolocation'])
     $scope.checkpointsDisplayLimit = 5;
   })
 
-  .controller('FollowPathCtrl', function($scope, path, PathService, MapService, $geolocation, $stateParams, $timeout) {
-
-    $scope.path = path;
+  .controller('FollowPathCtrl', function($scope, PathService, MapService, $geolocation, $stateParams) {
     var directionDisplay = null;
-//    var nextCheckpoint = 0;
-    $scope.showMap = true;
-    $scope.nextCheckpointNumber = 0;
-    $scope.nextCheckpoint = path.checkpoints[$scope.nextCheckpointNumber];
 
     var computeDistance = function(origin, destination) {
 
@@ -161,11 +155,18 @@ angular.module('starter.controllers', ['ngGeolocation'])
 //      console.dir(geoMarker.getPosition());
     };
 
-    init();
+    PathService.getPath($stateParams.pathId).then(function (path) {
+      console.dir(path);
+      $scope.path = path;
+      $scope.showMap = true;
+      $scope.nextCheckpointNumber = 0;
+      $scope.nextCheckpoint = $scope.path.checkpoints[$scope.nextCheckpointNumber];
+      init();
+    });
 
     $scope.goToNextCheckpoint = function() {
       $scope.nextCheckpointNumber++;
-      $scope.nextCheckpoint = path.checkpoints[$scope.nextCheckpointNumber];
+      $scope.nextCheckpoint = $scope.path.checkpoints[$scope.nextCheckpointNumber];
       var position = $scope.geoMarker.getPosition();
       var pos = {'latitude': position.lat(), 'longitude': position.lng()};
       MapService.traceRoute(directionDisplay, pos, PathService.getCheckpointCoordinates($scope.nextCheckpointNumber));

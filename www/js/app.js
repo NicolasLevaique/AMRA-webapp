@@ -152,12 +152,6 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
           controller: 'PathCtrl'
         }
       }
-//      ,
-//      resolve: {
-//        path: function($stateParams, PathService) {
-//          return PathService.getPath($stateParams.pathId);
-//        }
-//      }
     })
     .state('app.follow', {
       url: "/paths/follow/:pathId",
@@ -165,16 +159,6 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
         'menuContent' :{
           templateUrl: "templates/followPath.html",
           controller: 'FollowPathCtrl'
-//          controller: function($scope, $stateParams) {
-//            $scope.path = {};
-//            $scope.path.id = $stateParams.pathId;
-//            console.log("follow");
-//          }
-        }
-      },
-      resolve: {
-        path: function($stateParams, PathService) {
-          return PathService.getPath($stateParams.pathId);
         }
       }
     })
