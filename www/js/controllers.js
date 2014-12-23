@@ -40,11 +40,15 @@ angular.module('starter.controllers', ['ngGeolocation'])
     };
   })
 
-  .controller('HomeCtrl', function ($scope, $stateParams, $geolocation, PathsService/*, PlaylistService*/) {
+  .controller('HomeCtrl', function ($scope, $stateParams, $geolocation, PathsService) {
+    $scope.accessPosition = false;
+    $scope.noGeolocationMessage = "To use this web application, you will have to authorize us to access your location... " +
+      "But don't worry! We are not saving it anywhere!";
     var suggestPaths = function () {
       var position = $geolocation.getCurrentPosition({
         timeout: 20000
       }).then(function (position) {
+        $scope.accessPosition = true;
         PathsService.getSuggestedPaths(position, 200000000000).then(function (result) {
           console.dir(result.paths);
           $scope.suggestedPaths = result.paths;
@@ -52,13 +56,11 @@ angular.module('starter.controllers', ['ngGeolocation'])
       }, function (error) {
         console.log('error : ');
         console.dir(error);
-        $scope.noGeolocationMessage = "To use this web application, you will have to authorize us to access your location... But don't worry! We are not saving it anywhere!"
+        $scope.accessPosition = false;
       });
     };
 
     suggestPaths();
-//        $scope.suggestedPaths = suggestedPaths;
-//        $scope.playlists = suggestedPaths;
   })
 
   // .controller('PlaylistCtrl', function ($scope, $stateParams, PlaylistService) {
@@ -71,8 +73,11 @@ angular.module('starter.controllers', ['ngGeolocation'])
   //});
   //})
 
-  .controller('PathCtrl', function($scope, path) {
-    $scope.path = path;
+  .controller('PathCtrl', function($scope, PathService, $stateParams) {
+    PathService.getPath($stateParams.pathId).then(function (path) {
+      console.dir(path);
+      $scope.path = path;
+    });
     $scope.checkpointsDisplayLimit = 5;
   })
 
