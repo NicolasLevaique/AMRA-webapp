@@ -9,7 +9,7 @@ angular.module('starter.services', [])
       //if dev
       backend: 'http://localhost:8200/api/'
       // if prod
-//      backend: 'http://3ma7.learning-socle.org/'
+      //backend: 'http://3ma7.learning-socle.org/'
     }
   }])
 
@@ -51,21 +51,99 @@ angular.module('starter.services', [])
     }
   }])
 
-  .service('PathsService', ['$http', '$q', 'Environment', function($http, $q, Environment) {
+    .service('PathsService', ['$http', '$q', 'Environment', function($http, $q, Environment) {
+        return {
+            getSuggestedPaths: function (position, distance) {
+                var deferred = $q.defer();
+                console.dir(position);
+                $http.get(Environment.backend + 'paths/?lat=' + position.coords.latitude +
+                    '&long=' + position.coords.longitude + '&dist=' + distance).success(function (paths) {
+                    deferred.resolve(paths);
+                }).error(function (err, status) {
+                    deferred.reject(status);
+                });
+                return deferred.promise;
+            }
+        }
+    }])
+
+.service('UserService', ['$http', '$q', 'Environment', function($http, $q, Environment) {
+        var User = {
+            isConnected: false,
+            username: ''
+        };
+        return {
+            User : User
+        }
+    }])
+
+
+
+
+.service('FBService', ['$http', '$q', 'UserService', function($http, $q, UserService) {
     return {
-      getSuggestedPaths: function (position, distance) {
-        var deferred = $q.defer();
-        console.dir(position);
-        $http.get(Environment.backend + 'paths/?lat=' + position.coords.latitude +
-          '&long=' + position.coords.longitude + '&dist=' + distance).success(function (paths) {
-          deferred.resolve(paths);
-        }).error(function (err, status) {
-          deferred.reject(status);
-        });
-        return deferred.promise;
-      }
+
+        getLoginStatus : function(callbackFunction) {
+            console.log("calling FB.getLoginStatus");
+            FB.getLoginStatus(callbackFunction);
+            console.log("After calling FB.getLoginStatus");
+
+        },
+        getUserInfos : function() {
+            var deferred = $q.defer();
+            FB.api('/me', function (response) {
+                console.log(JSON.stringify(response));
+                /*
+                 {"id":"10205998707993947","first_name":"Thomas","gender":"male","last_name":"Vuillemin",
+                 "link":"https://www.facebook.com/app_scoped_user_id/10205998707993947/",
+                 "locale":"en_US","name":"Thomas Vuillemin","timezone":1,"updated_time":"2014-06-11T11:34:11+0000","verified":true}
+                 */
+                UserService.User.isLogged = true;
+                UserService.User.name = response.name;
+                UserService.User.id = response.id;
+                UserService.User.isConnected = true;
+
+                deferred.resolve();
+            });
+            return deferred.promise;
+
+        },
+        login : function(callbackFunction) {
+            FB.login(callbackFunction);
+        },
+        watchLoginChange : function () {
+            facebook.FB.Event.subscribe('auth.authResponseChange', function(response) {
+
+                if (response.status === 'connected') {
+
+                    /*
+                     The user is already logged,
+                     is possible retrieve his personal info
+                     */
+                    _self.getUserInfo();
+
+                    /*
+                     This is also the point where you should create a
+                     session for the current user.
+                     For this purpose you can use the data inside the
+                     response.authResponse object.
+                     */
+
+                }
+                else {
+
+                    /*
+                     The user is not logged to the app, or into Facebook:
+                     destroy the session on the server.
+                     */
+
+                };
+                console.log("lala");
+            })
+        }
     }
-  }])
+}])
+
 
   .service('MapService', ['$http', '$q', function() {
     return {

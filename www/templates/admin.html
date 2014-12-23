@@ -1,4 +1,4 @@
-<ion-view title="admin">
+<ion-view title="Create a path">
 
 
     <ion-nav-buttons side="left">
@@ -13,42 +13,68 @@
     </ion-content>
   -->
 
+
     <ion-content class="has-header"  scrollbar-x="true" padding="true">
-        <h1 class="title">Create a path</h1>
-
-        <form name="form" novalidate class="simple-form">
-            <div class="list">
-                <label class="item item-input item-stacked-label">
-                    <span class="input-label" ng-model="path.name" required>Name</span>
-                    <input type="text" placeholder="Visit of Toulouse">
-                </label>
-                <label class="item item-input item-stacked-label">
-                    <span class="input-label" ng-model="path.introduction" required>Brief description</span>
-                    <input type="text" placeholder="Nice visit of Toulouse, for a great afternoon!">
-                </label>
-                <label class="item item-input item-stacked-label">
-                    <span class="input-label" ng-model="path.description" required>Detailed description</span>
-                    <input type="text" placeholder="The visit starts with...">
-                </label>
-                <button ng-click="publishPath()" ng-disabled="form.$invalid">Publish path</button>
+        <div ng-show="user.isConnected" class="card">
+            <div class="item item-text-wrap">
+                Welcome, {{user.name}}
             </div>
-        </form>
-
-        <button ng-click="addCheckpoint()">Add Checkpoint</button>
-
-        <ion-item ng-repeat="checkpoint in path.checkpoints" on-finish-render>
-            <h4> New Checkpoint </h4>
-            <form name="form" novalidate class="simple-form">
-                Name:
-                <input type="text" ng-model="checkpoint.name"  required /><br />
-                Description :
-                <input type="text" ng-model="checkpoint.description" required/><br />
-                Position :
-                <input type="text" id={{"autocomplete"+$index}} required/><br />
-            </form>
-
-            <button ng-click="addCheckpoint()">Add Checkpoint</button>
-        </ion-item>
         </div>
+
+
+
+        <div class="card">
+            <div class="list">
+                <div class="item item-divider">Informations about the new path</div>
+                <div class="item item-text-wrap">
+                <form name="form" novalidate class="simple-form">
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Name:</span>
+                        <input type="text" ng-model="path.name" placeholder="Name of your path"required >
+                    </label>
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Description :</span>
+                        <input type="text" ng-model="path.description" placeholder="Enter a short description">
+                    </label>
+                </form>
+                    </div>
+                    <div class="item">
+                    <button class="button icon-left ion-plus-round button-light"
+                            ng-disabled="form.$invalid"
+                            ng-click="addCheckpoint()">Add your first Checkpoint</button>
+                </div>
+            </div>
+
+        </div>
+        <div class="card" ng-repeat="checkpoint in path.checkpoints" on-finish-render>
+            <div class="item item-divider"> Checkpoint {{$index}}</div>
+            <div class="item item-text-wrap">
+                <form name="form" novalidate class="simple-form">
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Name:</span>
+                        <input type="text" ng-model="checkpoint.name"  placeholder="Name of this checkpoint" required />
+                    </label>
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Description:</span>
+                        <input type="text" ng-model="checkpoint.description" placeholder="Description of this checkpoint" required/>
+                    </label>
+                    <label class="item-stacked-label"><span class="input-label">Position:</span></label>
+                    <label class="item item-input ">
+                        <i class="icon ion-search placeholder-icon"></i>
+                        <input type="text" id={{"autocomplete"+$index}}
+                               ng-model="checkpoint.position" placeholder="Search for the position" required/>
+
+                    </label>
+                </form>
+            </div>
+            <div class="item">
+                <button class="button icon-left ion-paper-airplane button-light"
+                        ng-click="publishPath()"
+                        ng-disabled="form.$invalid ">Publish your path now</button>
+                <button class="button icon-left ion-plus-round button-light"
+                        ng-click="addCheckpoint()">Add a New Checkpoint</button>
+            </div>
+        </div>
+        <br/><br/><br/>
     </ion-content>
 </ion-view>

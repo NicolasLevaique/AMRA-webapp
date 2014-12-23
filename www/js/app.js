@@ -122,6 +122,9 @@ var app = angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
   });
 })
 
+
+
+
 .config(function($stateProvider, $urlRouterProvider, $logProvider) {
   $stateProvider
     .state('app', {
