@@ -122,7 +122,7 @@ angular.module('starter.controllers', ['ngGeolocation'])
 
         var pos = {'latitude': position.lat(), 'longitude': position.lng()};
 
-        if (computeDistance(pos, path.checkpoints[0]) > 0.3) {
+        if (computeDistance(pos, $scope.path.checkpoints[0]) > 0.3) {
           MapService.traceRoute(directionDisplay, origin, destination);
         }
         else {
@@ -343,7 +343,7 @@ angular.module('starter.controllers', ['ngGeolocation'])
 //          if (position != null) {
 //            computeRoadToNextCheckpoint(GeoMarker.getPosition());
 //          } else {
-//            $log.debug("position null");
+//            athlog.debug("position null");
 //            alert("your browser doesn't support %GeoLocation");
 //          }
 //        };
