@@ -1,11 +1,7 @@
 <!-- added by me-->
 
-<div class="bar bar-header bar-positive">
-        <h1 class="title">bar-positive</h1>
-</div>
-<ion-nav-buttons side="left">
-    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
-</ion-nav-buttons>
+
+
 <!-- added by me
 <div class="tabs-striped tabs-top tabs-background-positive tabs-light">
     <div class="tabs">
@@ -23,15 +19,23 @@
     </div>
 </div>
 -->
-<!-- added by me-->
 
 <ion-view title="Path">
 
+    <ion-nav-buttons side="left">
+        <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+    </ion-nav-buttons>
+
+
     <ion-content class="has-header" id ="browse-content">
+
         <!--TODO: adapt to computer screen!-->
 
         <div class="list card">
 
+            <div class="item item-avatar" style="background-color: #43cee6;">
+                Getting Started !!
+                </div>
             <div class="item item-avatar">
                 <img src="../img/city_tour.jpg">
                 <h2>{{path.title}}</h2>
@@ -69,8 +73,8 @@
                 </div>
             </div>
 
-            <div >
-                <a class="item item-icon-left" href="#/app/paths/follow/{{path.id}}">
+            <div style ="background-color: greenyellow">
+                <a class="item item-icon-left" href="#/app/paths/follow/{{path.id}}" style ="background-color:aquamarine">
                     <i class="icon ion-arrow-graph-up-right"></i>
                     Start this path
                 </a>

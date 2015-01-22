@@ -5,7 +5,7 @@
 
 }
 .ion-body {
-    background-image: url('../img/home.jpg');
+    /*background-image: url('../img/home.jpg');*/
 }
 #search-content, #browse-content {
     padding-top: 5%;

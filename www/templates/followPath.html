@@ -1,11 +1,11 @@
 <ion-view title="FollowPath">
     <ion-content class="has-header">
         <div class="list card">
-            <div class="item item-divider">
+            <div class="item item-divider" style="background-color: #43cee6">
                 <h1>{{path.title}}</h1>
             </div>
 
-            <div ng-show="showMap">
+            <div ng-show="showMap" style="margin:auto">
 
                 <div class="item item-avatar">
                     <img src="../img/city_tour.jpg">
@@ -17,9 +17,9 @@
                     <div id="map" style="height:400px"></div>
                 </div>
                 <div class="item">
-                    <button class="button button-light icon-left ion-location" ng-click="showMap=false;">I'm arrived!</button>
+                    <button class="button button-light icon-left ion-location" ng-click="showMap=false;" style="background-color: peachpuff">I'm arrived!</button>
                     <!--<div ng-show="nextCheckpointNumber<(path.checkpoints.length-1)">-->
-                        <button ng-show="nextCheckpointNumber<(path.checkpoints.length-1)" class="button button-light icon-left ion-map" ng-click="goToNextCheckpoint();">Go to next checkpoint</button>
+                        <button ng-show="nextCheckpointNumber<(path.checkpoints.length-1)" class="button button-light icon-left ion-map" ng-click="goToNextCheckpoint();" style="background-color: greenyellow">Go to next checkpoint</button>
                     <!--</div>-->
                 </div>
             </div>
@@ -36,10 +36,10 @@
                 <div class="item item-body">
                     {{nextCheckpoint.description}}
                 </div>
-                <div class="item">
-                    <button class="button button-light icon-left ion-chevron-left" ng-click="showMap=true;">Go back to itinerary</button>
+                <div class="item" >
+                    <button style="padding-left: 50%"class="button button-light icon-left ion-chevron-left" ng-click="showMap=true;" style="background-color:lavender ">Go back to itinerary</button>
                     <div ng-show="nextCheckpointNumber<(path.checkpoints.length-1)">
-                        <button class="button button-light icon-left ion-map" ng-click="goToNextCheckpoint();showMap=true;">Go to next checkpoint</button>
+                        <button style="padding-left: 50%" class="button button-light icon-left ion-map" ng-click="goToNextCheckpoint();showMap=true;">Go to next checkpoint</button>
                     </div>
                 </div>
             </div>

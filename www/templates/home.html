@@ -4,13 +4,13 @@
         <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
     </ion-nav-buttons>
 
-    <ion-content class="ion-body"  scrollbar-x="true" padding="true">
+    <ion-content class="ion-body" >
         <div class="card">
             <div class="item">
                 <div class="item-avatar">
                     <img src="../img/logo.png">
-                    <h1 class="title"><em>Assist my ramble</em> Application</h1>
-                    <p>This application allow you to visit some selected paths of the city you want to visit </p>
+                    <h1 class="title" style="color: #145fd7; font-family: Helvetica"><em>Assist my ramble</em> Application</h1>
+                    <p> <i>This application allow you to visit some selected paths of the city you want to visit </i></p>
                 </div>
             </div>
         </div>
@@ -30,20 +30,18 @@
             <div class="about-head text-center">
                 <div class="item item-divider">
                     <h3>BEST DESTINATIONS</h3>
-                    <p> Here are some selected paths to begin with</p>
                 </div>
 
-                <span></span><img src="../img/about-img.png" alt=""><span></span>
+                <span></span><img src="../img/about-icons.png" alt=""><span></span>
                 <hr/>
             </div>
         </div>
         <!--/About-->
         <div class="list card">
-            <!--<div class="item">
+            <div class="item">
                 Getting Started !
                 <p> Here are some selected paths to begin with</p>
             </div>
-            -->
             <div  ng-repeat="path in suggestedPaths">
                 <a class="item item-thumbnail-left" href="#/app/paths/description/{{path.id}}">
                     <img src="../img/city_tour.jpg" width="50" height="50"/>
