@@ -8,6 +8,9 @@
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
+      <!--bootstrap CSS, not really useful?-->
+      <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">-->
+
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
@@ -25,10 +28,22 @@
       <script type="text/javascript"
               src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDaSOOiPaqDhfR3CRMKAfmvnREciK-5rec">
       </script>
+      <script src="lib/ngGeolocation/ngGeolocation.min.js"></script>
       <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/geolocationmarker/src/geolocationmarker-compiled.js"></script>
   </head>
+  <!-- Facebook SDK -->
+  <script src="http://connect.facebook.net/en_US/all.js"></script>
+
 
   <body ng-app="starter">
-    <ion-nav-view></ion-nav-view>
+  <div id="fb-root"></div>
+  <script>
+      FB.init({
+          appId      : '301755423346751',
+          status     : true,
+          xfbml      : true
+      });
+  </script>
+  <ion-nav-view></ion-nav-view>
   </body>
 </html>
