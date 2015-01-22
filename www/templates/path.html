@@ -1,5 +1,33 @@
+<!-- added by me-->
+
+<div class="bar bar-header bar-positive">
+        <h1 class="title">bar-positive</h1>
+</div>
+<ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+</ion-nav-buttons>
+<!-- added by me
+<div class="tabs-striped tabs-top tabs-background-positive tabs-light">
+    <div class="tabs">
+        <a class="tab-item active" href="#">
+            <i class="icon ion-home"></i>
+            Test
+        </a>
+        <a class="tab-item" href="#">
+            <h1> {{playlist.title}} </h1>
+        </a>
+        <a class="tab-item" href="#">
+            <i class="icon ion-gear-a"></i>
+            Settings
+        </a>
+    </div>
+</div>
+-->
+<!-- added by me-->
+
 <ion-view title="Path">
-    <ion-content class="has-header">
+
+    <ion-content class="has-header" id ="browse-content">
         <!--TODO: adapt to computer screen!-->
 
         <div class="list card">
@@ -17,7 +45,16 @@
 
             </div>
 
-            <div ng-repeat="checkpoint in path.checkpoints | limitTo:checkpointsDisplayLimit">
+            <!-- new -->
+            <div class="about-head text-center">
+                <div class="item item-divider">
+                    <h3>CHECKPOINTS</h3>
+                </div>
+
+            </div>
+            <!-- new -->
+
+            <div ng-repeat="checkpoint in path.checkpoints | limitTo:checkpointsDisplayLimit" class="item item-thumbnail-left">
                 <div class="item item-thumbnail-left" href="#">
                     <img src="../img/city_tour.jpg">
                     <h2>{{checkpoint.name}}</h2>
@@ -42,3 +79,6 @@
         </div>
     </ion-content>
 </ion-view>
+
+<ion-nav-bar class="bar-positive" animation="nav-title-slide-ios7">
+</ion-nav-bar>

@@ -1,5 +1,51 @@
 /* Empty. Add your own CSS if you like */
 
+.marge, #margeId {
+    padding-top: 5%;
+
+}
+.ion-body {
+    background-image: url('../img/home.jpg');
+}
+#search-content, #browse-content {
+    padding-top: 5%;
+    background-color: lavender;
+
+}
+#card{
+    background-color  : #dddddd;
+    font: 100% Helvetica, sans-serif;
+
+}
+
+#map{
+    height:420px;
+    width : 600px;
+}
+/*reset*/
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p {
+    list-style:none;margin:0px;padding:0px;
+}
+
+body{
+    margin:0;
+    padding:0;
+    font-family: 'Lato', sans-serif;
+    -webkit-appearance:none;
+}
+body a{
+    transition:0.5s all;
+    -webkit-transition:0.5s all;
+    -moz-transition:0.5s all;
+    -o-transition:0.5s all;
+    -ms-transition:0.5s all;
+}
+h1,h2,h3,h4,h5,h6{
+    margin:0;
+}
+p{
+    margin:0;
+}
 
 .ionic-logo {
     display: block;
@@ -21,21 +67,76 @@
     clear: both;
 }
 
+
 .item-image {
-    width : 50%;
-    height: 50%;
-    align-content: center;
-}
-.path {
     padding: 0px 12px 20px 12px;
 }
-
-.list-card img{
+/*
+.list card img{
     float: left;
     margin-right: 12px;
 }
+*/
 .ion-item  img{
     float: left;
     margin-right: 12px;
 }
+
+/*--about--*/
+.about {
+    padding-top: 50px;
+}
+.about-head h3 {
+    color: #60B0E6;
+    font-size: 1.4em;
+}
+.about-grids h4 {
+    font-size: 1.1em;
+    font-weight: 500;
+    color: #343E46;
+}
+.about-head img{
+    margin:0.5em 0.5em 0 0;
+}
+.about-head span{
+    background:rgba(128, 128, 128, 0.41);
+    width:13%;
+    height:1px;
+    display: inline-block;
+    vertical-align: super;
+    margin-bottom:0.2em
+}
+.about-head span:nth-child(2){
+    margin:0 0.5em 0.2em 0;
+}
+
+.social-icons{
+    margin-top:2em;
+}
+.social-icons a span{
+    width:36px;
+    height:39px;
+    background:url('../img/social-icons.png') no-repeat 0px 0px;
+    display:inline-block;
+    margin: 0 0.5em;
+}
+.social-icons a span.facebook{
+    background-position: -2px 0px;
+}
+.social-icons a span.twitter{
+    background-position:-66px 0px;
+}
+.social-icons a span.googleplus{
+    background-position:-128px 0px;
+}
+.social-icons a span.pinterest{
+    background-position: -193px 0px;
+}
+.social-icons a span.instagram{
+    background-position:-257px 0px
+}
+.social-icons a span:hover{
+    opacity:0.4;
+}
+
 
